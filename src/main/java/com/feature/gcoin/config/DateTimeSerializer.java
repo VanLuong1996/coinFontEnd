@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * @author GEM
+ * @author TienNV
  * @CreatedDate Oct 4, 2017 2:40:54 PM
  */
 public class DateTimeSerializer extends JsonSerializer<Date> {
