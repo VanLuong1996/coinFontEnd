@@ -10,6 +10,9 @@ public class BaseEntity {
     @Column(name = "UPDATE_AT")
     private Date updateAt;
 
+    public BaseEntity() {
+    }
+
     public Date getCreatAt() {
         return creatAt;
     }

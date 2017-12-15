@@ -50,10 +50,12 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "type")
     private String type; //loai 7
 
-    private Date creatAt;
+    private Date creatAt; //8
 
-    private Date updateAt;
+    private Date updateAt; //9
 
+    public User() {
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",

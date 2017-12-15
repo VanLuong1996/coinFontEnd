@@ -1,15 +1,11 @@
 package com.feature.gcoin.model;
 
-import org.joda.time.DateTime;
-import org.omg.CORBA.PRIVATE_MEMBER;
-
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name="CHECK_IN_OUT")
-public class CheckInOut extends BaseEntity{
-
+@Table(name="SERVICES_BUY")
+public class ServiceBuy extends BaseEntity{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,20 +14,20 @@ public class CheckInOut extends BaseEntity{
     @Column(name = "USER_ID")
     private Long userId; //2
 
-    @Column(name = "CHECK_IN_TIME")
-    private DateTime checkInTime; //3
+    @Column(name = "SERVICE_ID")
+    private Long serviceId; //3
 
-    @Column(name = "CHECK_OUT_TIME")
-    private DateTime checkOutTime; //4
+    @Column(name = "QUANTITY")
+    private Long quantity; //4
 
-    @Column(name = "TOTAL")
-    private DateTime total; //5
+    @Column(name = "PRICE")
+    private Long price; //5
 
     private Date createAt; //6
 
     private Date updateAt; //7
 
-    public CheckInOut() {
+    public ServiceBuy() {
     }
 
     public Long getId() {
@@ -50,28 +46,28 @@ public class CheckInOut extends BaseEntity{
         this.userId = userId;
     }
 
-    public DateTime getCheckInTime() {
-        return checkInTime;
+    public Long getServiceId() {
+        return serviceId;
     }
 
-    public void setCheckInTime(DateTime checkInTime) {
-        this.checkInTime = checkInTime;
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
     }
 
-    public DateTime getCheckOutTime() {
-        return checkOutTime;
+    public Long getQuantity() {
+        return quantity;
     }
 
-    public void setCheckOutTime(DateTime checkOutTime) {
-        this.checkOutTime = checkOutTime;
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 
-    public DateTime getTotal() {
-        return total;
+    public Long getPrice() {
+        return price;
     }
 
-    public void setTotal(DateTime total) {
-        this.total = total;
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public Date getCreateAt() {
@@ -82,10 +78,12 @@ public class CheckInOut extends BaseEntity{
         this.createAt = createAt;
     }
 
+    @Override
     public Date getUpdateAt() {
         return updateAt;
     }
 
+    @Override
     public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
