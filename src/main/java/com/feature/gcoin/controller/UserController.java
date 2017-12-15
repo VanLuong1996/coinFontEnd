@@ -24,13 +24,11 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping( method = GET, value = "/user/{userId}" )
-    @PreAuthorize("hasRole('ADMIN')")
     public User loadById( @PathVariable Long userId ) {
         return this.userService.findById( userId );
     }
 
     @RequestMapping( method = GET, value= "/user/all")
-    @PreAuthorize("hasRole('ADMIN')")
     public List<User> loadAll() {
         return this.userService.findAll();
     }
@@ -42,7 +40,6 @@ public class UserController {
      *  to access this endpoint.
      */
     @RequestMapping("/whoami")
-    @PreAuthorize("hasRole('USER')")
     public User user(Principal user) {
         return this.userService.findByUsername(user.getName());
     }
