@@ -17,7 +17,7 @@ import com.feature.gcoin.model.User;
 import com.feature.gcoin.repository.UserRepository;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
 	protected final Log LOGGER = LogFactory.getLog(getClass());
 
@@ -31,10 +31,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private AuthenticationManager authenticationManager;
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(username);
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+		User user = userRepository.findByUsername(userName);
 		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
+			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));
 		} else {
 			return user;
 		}

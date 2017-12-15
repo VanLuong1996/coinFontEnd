@@ -1,6 +1,6 @@
-package com.feature.gcoin.dto;
+package com.feature.gcoin.dto.reponse;
 
-public class ResponseObject {
+public class Response {
     private Integer errCode;
     private String msg;
     private Object result;
