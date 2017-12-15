@@ -18,42 +18,44 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 
 @Entity
 @Table(name="users")
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
 
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id; //id 1
 
     @Column(name = "username")
-    private String username;
+    private String username; //ten dang nhap 2
+
+    @Column(name = "email")
+    private String email; //email 3
+
+    @Column(name = "name")
+    private String name; //name 4
 
     @JsonIgnore
     @Column(name = "password")
-    private String password;
+    private String password; //pass 5
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "address")
+    private String address; //dia chi 6
 
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "type")
+    private String type; //loai 7
 
-    @Column(name = "email")
-    private String email;
+    private Date creatAt; //8
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
+    private Date updateAt; //9
 
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    @Column(name = "last_password_reset_date")
-    private Timestamp lastPasswordResetDate;
+    public User() {
+    }
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
@@ -81,26 +83,53 @@ public class User implements UserDetails {
         return password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    @Override
+    public Date getCreatAt() {
+        return creatAt;
+    }
+
+    @Override
+    public void setCreatAt(Date creatAt) {
+        this.creatAt = creatAt;
+    }
+
+    @Override
+    public Date getUpdateAt() {
+        return updateAt;
+    }
+
+    @Override
+    public void setUpdateAt(Date updateAt) {
+        this.updateAt = updateAt;
+    }
+
     public void setPassword(String password) {
         Timestamp now = new Timestamp(DateTime.now().getMillis());
-        this.setLastPasswordResetDate( now );
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public void setAuthorities(List<Authority> authorities) {
@@ -120,31 +149,6 @@ public class User implements UserDetails {
         this.email = email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
-    public Timestamp getLastPasswordResetDate() {
-        return lastPasswordResetDate;
-    }
-
-    public void setLastPasswordResetDate(Timestamp lastPasswordResetDate) {
-        this.lastPasswordResetDate = lastPasswordResetDate;
-    }
-
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
@@ -161,6 +165,11 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
 }
