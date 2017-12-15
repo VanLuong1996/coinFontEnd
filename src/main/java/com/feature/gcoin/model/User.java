@@ -37,12 +37,6 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "last_name")
-    private String lastName;
-
     @Column(name = "email")
     private String email;
 
@@ -85,22 +79,6 @@ public class User implements UserDetails {
         Timestamp now = new Timestamp(DateTime.now().getMillis());
         this.setLastPasswordResetDate( now );
         this.password = password;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public void setAuthorities(List<Authority> authorities) {
