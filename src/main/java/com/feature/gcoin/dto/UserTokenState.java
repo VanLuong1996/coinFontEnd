@@ -1,4 +1,4 @@
-package com.feature.gcoin.model;
+package com.feature.gcoin.dto;
 
 public class UserTokenState {
     private String access_token;
