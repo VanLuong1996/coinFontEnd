@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/auth")
+@RequestMapping(value = "/checkInOut")
 public class CheckInCheckOutConTroller {
 
     //lay thong tin nguoi dung va thiet bi
