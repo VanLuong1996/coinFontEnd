@@ -32,10 +32,6 @@ public class TransactionLog extends BaseEntity{
     @Column(name = "TRANSACTION_LOG")
     private String transactionLog; //7
 
-    private DateTime createAt; //8
-
-    private DateTime updateAt; //9
-
     public TransactionLog() {
     }
 
@@ -95,21 +91,4 @@ public class TransactionLog extends BaseEntity{
         this.transactionLog = transactionLog;
     }
 
-    public DateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(DateTime createAt) {
-        this.createAt = createAt;
-    }
-
-    @Override
-    public DateTime getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(DateTime updateAt) {
-        this.updateAt = updateAt;
-    }
 }

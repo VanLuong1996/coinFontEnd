@@ -32,22 +32,5 @@ public class GcoinServiceImpl implements GcoinService {
         return false;
     }
 
-    //list best of staff and number vote
-    @Override
-    public List<UserDTO> bestStaffs(String address) {
-        List<UserDTO> lstDTO = new ArrayList<>();
-        return lstDTO;
-    }
 
-    // user vote user
-    @Override
-    public boolean bestStaffsVotes(String addressVoter, String addressCandidate) {
-        return false;
-    }
-
-    // choose best staff
-    @Override
-    public boolean addBestStaff(String address) {
-        return false;
-    }
 }

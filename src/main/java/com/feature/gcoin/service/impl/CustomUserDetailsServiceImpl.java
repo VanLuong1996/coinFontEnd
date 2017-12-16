@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.feature.gcoin.model.User;
@@ -18,53 +19,55 @@ import com.feature.gcoin.repository.UserRepository;
 @Service
 public class CustomUserDetailsServiceImpl implements UserDetailsService {
 
-	protected final Log LOGGER = LogFactory.getLog(getClass());
+    protected final Log LOGGER = LogFactory.getLog(getClass());
 
-	@Autowired
-	private UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
-	@Autowired
-	private AuthenticationManager authenticationManager;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Override
-	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-		User user = userRepository.findByUsername(userName);
-		if (user == null) {
-			throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));
-		} else {
-			return user;
-		}
-	}
+    @Override
+    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(userName);
+        if (user == null) {
+            throw new UsernameNotFoundException(String.format("No user found with username '%s'.", userName));
+        } else {
+            return user;
+        }
+    }
 
-	public void changePassword(String oldPassword, String newPassword) {
+    public void changePassword(String oldPassword, String newPassword) {
 
-		Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
-		String username = currentUser.getName();
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = currentUser.getName();
 
-		if (authenticationManager != null) {
-			LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
+        if (authenticationManager != null) {
+            LOGGER.debug("Re-authenticating user '" + username + "' for password change request.");
 
-			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
-		} else {
-			LOGGER.debug("No authentication manager set. can't change Password!");
+//			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, oldPassword));
+        } else {
+            LOGGER.debug("No authentication manager set. can't change Password!");
 
-			return;
-		}
+            return;
+        }
 
-		LOGGER.debug("Changing password for user '" + username + "'");
+        LOGGER.debug("Changing password for user '" + username + "'");
 
-		User user = (User) loadUserByUsername(username);
+        User user = (User) loadUserByUsername(username);
 
-//		user.setPassword(passwordEncoder.encode(newPassword));
-		userRepository.save(user);
+        if (!passwordEncoder.encode(oldPassword).equals(user.getPassword())) {
+            throw new UsernameNotFoundException(String.format("Incorrect current password '%s'.", ""));
+        }
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
 
-	}
+    }
 
-	public void signUp(User user) {
-		userRepository.save(user);
-
-	}
+    public void signUp(User user) {
+        userRepository.save(user);
+    }
 }

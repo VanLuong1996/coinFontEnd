@@ -25,10 +25,6 @@ public class ServiceBuy extends BaseEntity{
     @Column(name = "PRICE")
     private Long price; //5
 
-    private DateTime createAt; //6
-
-    private DateTime updateAt; //7
-
     public ServiceBuy() {
     }
 
@@ -72,21 +68,4 @@ public class ServiceBuy extends BaseEntity{
         this.price = price;
     }
 
-    public DateTime getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(DateTime createAt) {
-        this.createAt = createAt;
-    }
-
-    @Override
-    public DateTime getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(DateTime updateAt) {
-        this.updateAt = updateAt;
-    }
 }

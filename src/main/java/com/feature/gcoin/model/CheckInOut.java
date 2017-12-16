@@ -4,10 +4,11 @@ import org.joda.time.DateTime;
 import org.omg.CORBA.PRIVATE_MEMBER;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Table(name="CHECK_IN_OUT")
+@Table(name = "CHECK_IN_OUT")
 public class CheckInOut extends BaseEntity {
 
     @Id
@@ -19,17 +20,13 @@ public class CheckInOut extends BaseEntity {
     private Long userId; //2
 
     @Column(name = "CHECK_IN_TIME")
-    private DateTime checkInTime; //3
+    private Date checkInTime; //3
 
     @Column(name = "CHECK_OUT_TIME")
-    private DateTime checkOutTime; //4
+    private Date checkOutTime; //4
 
     @Column(name = "TOTAL")
     private Double total; //5
-
-    private DateTime createAt; //6
-
-    private DateTime updateAt; //7
 
     public CheckInOut() {
     }
@@ -50,22 +47,6 @@ public class CheckInOut extends BaseEntity {
         this.userId = userId;
     }
 
-    public DateTime getCheckInTime() {
-        return checkInTime;
-    }
-
-    public void setCheckInTime(DateTime checkInTime) {
-        this.checkInTime = checkInTime;
-    }
-
-    public DateTime getCheckOutTime() {
-        return checkOutTime;
-    }
-
-    public void setCheckOutTime(DateTime checkOutTime) {
-        this.checkOutTime = checkOutTime;
-    }
-
     public Double getTotal() {
         return total;
     }
@@ -74,20 +55,20 @@ public class CheckInOut extends BaseEntity {
         this.total = total;
     }
 
-    public DateTime getCreateAt() {
-        return createAt;
+    public Date getCheckInTime() {
+        return checkInTime;
     }
 
-    public void setCreateAt(DateTime createAt) {
-        this.createAt = createAt;
+    public void setCheckInTime(Date checkInTime) {
+        this.checkInTime = checkInTime;
     }
 
-    @Override
-    public DateTime getUpdateAt() {
-        return updateAt;
+    public Date getCheckOutTime() {
+        return checkOutTime;
     }
 
-    public void setUpdateAt(DateTime updateAt) {
-        this.updateAt = updateAt;
+    public void setCheckOutTime(Date checkOutTime) {
+        this.checkOutTime = checkOutTime;
     }
 }
+
