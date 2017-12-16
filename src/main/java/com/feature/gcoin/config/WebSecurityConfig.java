@@ -69,7 +69,7 @@
 //		List<RequestMatcher> csrfMethods = new ArrayList<RequestMatcher>();
 //		Arrays.asList("POST", "PUT", "PATCH", "DELETE")
 //				.forEach(method -> csrfMethods.add(new AntPathRequestMatcher("/**", method)));
-//		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
+//		http.sessionManaTienNVent().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().exceptionHandling()
 //				.authenticationEntryPoint(restAuthenticationEntryPoint).and().authorizeRequests()
 //				.antMatchers(HttpMethod.GET, "/", "/webjars/**", "/*.html", "/favicon.ico", "/**/*.html", "/**/*.css",
 //						"/**/*.js")

@@ -1,7 +1,7 @@
 package com.feature.gcoin.common.exception;
 
 /**
- * @author GEM
+ * @author TienNV
  * @CreatedDate Oct 4, 2017 2:56:36 PM
  */
 public interface ExceptionCode {
