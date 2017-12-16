@@ -5,6 +5,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.security.Principal;
 import java.util.List;
 
+import com.feature.gcoin.dto.reponse.InformationUser;
+import com.feature.gcoin.service.GcoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +29,7 @@ import com.feature.gcoin.service.UserService;
 
 
 @RestController
-@RequestMapping( value = "/api", produces = MediaType.APPLICATION_JSON_VALUE )
+@RequestMapping( value = "/user", produces = MediaType.APPLICATION_JSON_VALUE )
 public class UserController {
 
     @Autowired
@@ -36,12 +38,15 @@ public class UserController {
     @Autowired
     private TransactionLogService transactionLogService;
 
-    @RequestMapping( method = GET, value = "/user/{userId}" )
+//    @Autowired
+//    private GcoinService gcoinService;
+
+    @RequestMapping( method = GET, value = "/{userId}" )
     public User loadById( @PathVariable Long userId ) {
         return this.userService.findById( userId );
     }
 
-    @RequestMapping( method = GET, value= "/user/all")
+    @RequestMapping( method = GET, value= "/all")
     public List<User> loadAll() {
         return this.userService.findAll();
     }
@@ -82,4 +87,15 @@ public class UserController {
     	}
     }
 
+    @RequestMapping(value = "/infor/{id}", method = GET)
+    public InformationUser loadInformationUser( @PathVariable Long id ) {
+        InformationUser informationUser = new InformationUser();
+        User user = userService.findById( id );
+        informationUser.setEmail(user.getEmail());
+        informationUser.setName(user.getName());
+        informationUser.setUserName(user.getUsername());
+//        informationUser.setNumberCoin(user.getAddress().toString());
+
+        return informationUser;
+    }
 }

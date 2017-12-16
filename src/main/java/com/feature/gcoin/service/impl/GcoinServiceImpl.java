@@ -21,8 +21,8 @@ public class GcoinServiceImpl implements GcoinService {
 
     //get coins of user by address
     @Override
-    public boolean getCoin(String address) {
-        return false;
+    public Double getCoin(String address) {
+        return null;
     }
 
     //minus coins of user by address

@@ -25,7 +25,7 @@ public class CheckInOut extends BaseEntity{
     private DateTime checkOutTime; //4
 
     @Column(name = "TOTAL")
-    private DateTime total; //5
+    private Double total; //5
 
     private Date createAt; //6
 
@@ -66,11 +66,11 @@ public class CheckInOut extends BaseEntity{
         this.checkOutTime = checkOutTime;
     }
 
-    public DateTime getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(DateTime total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
