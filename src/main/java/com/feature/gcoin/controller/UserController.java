@@ -2,11 +2,15 @@ package com.feature.gcoin.controller;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.List;
 
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.security.TokenHelper;
+import com.feature.gcoin.service.GcoinService;
+import com.feature.gcoin.service.GemVoteService;
+import com.feature.gcoin.util.GcoinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +29,7 @@ import com.feature.gcoin.model.TransactionLog;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.service.TransactionLogService;
 import com.feature.gcoin.service.UserService;
+import org.web3j.crypto.CipherException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -42,6 +47,12 @@ public class UserController {
     @Autowired
     private TokenHelper tokenHelper;
 
+    @Autowired
+    private GcoinService gcoinService;
+
+    @Autowired
+    private GemVoteService gemVoteService;
+
 //    @Autowired
 //    private GcoinService gcoinService;
 
@@ -51,6 +62,18 @@ public class UserController {
         String username = tokenHelper.getUsernameFromToken(token);
         return userService.findByUsername(username);
     }
+
+    @RequestMapping(method = GET, value = "")
+    public void testCoin(HttpServletRequest req) throws Exception
+    {
+        GcoinUtil.loadWeb3j();
+        GcoinUtil.deloyGcoin();
+
+        gcoinService.addCoin("0xdc04977a2078c8ffdf086d618d1f961b6c546222", BigInteger.valueOf(10000));
+        BigInteger a = gcoinService.getCoin("0xdc04977a2078c8ffdf086d618d1f961b6c546222");
+
+    }
+
 
 //    @RequestMapping(method = GET, value = "/all")
 //    public List<User> loadAll() {
