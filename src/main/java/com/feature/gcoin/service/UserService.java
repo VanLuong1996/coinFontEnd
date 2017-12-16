@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
 
+	public List<User> findByIsFeature();
+
 	User findById(Long id);
 
 	User findByUsername(String userName) throws UsernameNotFoundException;

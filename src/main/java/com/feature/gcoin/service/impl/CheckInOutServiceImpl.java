@@ -69,7 +69,9 @@ public class CheckInOutServiceImpl implements CheckInOutService {
                         TransactionLog transactionLog = new TransactionLog();
                         transactionLog.setCreatAt(date);
                         transactionLog.setCoin(1L);
-                        transactionLog.setTransactionLog("Check in check out");
+                        User user = userRepository.findById(userId);
+                        String logSub = gcoinService.addCoin(user.getAddress(), BigInteger.valueOf(1L));
+                        transactionLog.setTransactionLog(logSub);
                         transactionLog.setType(Constants.TransactionType.ADD_COIN.name());
                         transactionLog.setUpdateAt(date);
                         transactionLog.setUserReceiveId(userId);

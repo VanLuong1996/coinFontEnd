@@ -44,7 +44,7 @@ public class VoteController {
     @RequestMapping(method = GET, value = "/bestStaffs")
     public ResponseEntity<?> bestStaffs() throws Exception {
         List<UserDTO> userDTOS = new ArrayList<>();
-        List<User> lst = userService.findAll();
+        List<User> lst = userService.findByIsFeature();
         for (User user : lst) {
             int votes = voteService.getNumberOfVote(user.getAddress());
             UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
@@ -60,7 +60,8 @@ public class VoteController {
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
         boolean res = voteService.voteToStaff(user.getAddress(), idUser);
-        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", res));
+        String msg = res ? "Have voted before!." : "Successful";
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, msg, res));
     }
 
 //    @RequestMapping(method = POST, value = "/addBestStaff")

@@ -1,9 +1,12 @@
 package com.feature.gcoin.service.impl;
 
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.VoteDTO;
+import com.feature.gcoin.model.TransactionLog;
 import com.feature.gcoin.model.User;
+import com.feature.gcoin.repository.TransactionLogRepository;
 import com.feature.gcoin.repository.UserRepository;
 import com.feature.gcoin.service.GemVoteService;
 import com.feature.gcoin.service.VoteService;
@@ -17,6 +20,7 @@ import org.web3j.crypto.CipherException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,6 +33,8 @@ public class VoteServiceImpl implements VoteService {
 
     @Autowired
     private GemVoteService gemVoteService;
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
 
     //list best of staff and number vote
     @Override
@@ -43,7 +49,7 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public void addBestListStaff() throws Exception {
         List<User> lst = userRepository.findByIsFeature();
-        for (User user: lst) {
+        for (User user : lst) {
             gemVoteService.addCandidate(user.getAddress());
         }
         logger.info("Them nguoi ung cu");
@@ -62,8 +68,23 @@ public class VoteServiceImpl implements VoteService {
         userVoters.get(0);
         User userCandidate = userRepository.findById(candidateId);
 
-        String log = gemVoteService.voteUser(userVoters.get(0).getAddress(), userCandidate.getAddress());
-        logger.info("hash of transection" + log);
+        Boolean checkVote = gemVoteService.getStatusVoter(userVoters.get(0).getAddress());
+        if (checkVote) {
+            return false;
+        } else {
+            String log = gemVoteService.voteUser(userVoters.get(0).getAddress(), userCandidate.getAddress());
+            //log
+            TransactionLog transaction = new TransactionLog();
+            transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+            transaction.setUserSendId(userVoters.get(0).getId());
+            transaction.setUserReceiveId(userCandidate.getId());
+            transaction.setCoin(null);
+            transaction.setServiceId(null);
+            transaction.setTransactionLog(log);
+            transaction.setCreatAt(new Date());
+            transaction.setUpdateAt(new Date());
+            transactionLogRepository.save(transaction);
+        }
         return true;
     }
 

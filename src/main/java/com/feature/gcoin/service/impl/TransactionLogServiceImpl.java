@@ -48,7 +48,7 @@ public class TransactionLogServiceImpl implements TransactionLogService {
         User userSend = userService.findById(userSendId);
         User userReceive = userService.findByAddress(req.getAddressReceive());
         try {
-           log= gcoinService.transferCoin(userSend.getAddress(), userReceive.getAddress(), BigInteger.valueOf(req.getTotalCoin()));
+           log = gcoinService.transferCoin(userSend.getAddress(), userReceive.getAddress(), BigInteger.valueOf(req.getTotalCoin()));
         } catch (Exception e) {
             e.printStackTrace();
         }

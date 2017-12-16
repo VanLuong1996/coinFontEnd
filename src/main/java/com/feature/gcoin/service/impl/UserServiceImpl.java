@@ -47,6 +47,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> findByIsFeature()  {
+        List<User> result = userRepository.findByIsFeature();
+        return result;
+    }
+
+    @Override
     public boolean login(LoginRequest loginRequest) {
         List<User> lst = userRepository.login(loginRequest.getUsername(), loginRequest.getPassword());
 //        List<User> lst = userRepository.login(loginRequest.getUsername(), passwordEncoder.encode(loginRequest.getPassword()));
