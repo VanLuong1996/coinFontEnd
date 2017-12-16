@@ -4,7 +4,7 @@ import com.feature.gcoin.model.BaseEntity;
 
 import javax.persistence.*;
 
-public class TransactionLogDTO extends BaseDTO{
+public class TransactionLogDTO extends BaseDTO {
 
     private Long id; //id 1
 
@@ -12,11 +12,17 @@ public class TransactionLogDTO extends BaseDTO{
 
     private Long userSendId; //3
 
+    private String userNameSend; //3
+
     private Long userReceiveId; //4
+
+    private String userNameReceive; //4
 
     private Long coin; //5
 
     private Long serviceId; //6
+
+    private String serviceName; //6
 
     private String transactionLog; //7
 
@@ -79,4 +85,27 @@ public class TransactionLogDTO extends BaseDTO{
         this.transactionLog = transactionLog;
     }
 
+    public String getUserNameSend() {
+        return userNameSend;
+    }
+
+    public void setUserNameSend(String userNameSend) {
+        this.userNameSend = userNameSend;
+    }
+
+    public String getUserNameReceive() {
+        return userNameReceive;
+    }
+
+    public void setUserNameReceive(String userNameReceive) {
+        this.userNameReceive = userNameReceive;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
 }

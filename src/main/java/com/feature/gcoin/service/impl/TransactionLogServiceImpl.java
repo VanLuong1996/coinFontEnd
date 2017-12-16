@@ -1,10 +1,18 @@
 package com.feature.gcoin.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.common.util.ModelMapperUtil;
+import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.TransactionLogDTO;
+import com.feature.gcoin.dto.reponse.TransactionLogReponse;
+import com.feature.gcoin.model.User;
+import com.feature.gcoin.service.ServicesService;
+import com.feature.gcoin.service.UserService;
 import org.mapstruct.MapperConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,32 +28,73 @@ import javax.persistence.PersistenceContext;
 @Service
 public class TransactionLogServiceImpl implements TransactionLogService {
 
-	@Autowired
-	private TransactionLogRepository transactionLogRepository;
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
 
-	@PersistenceContext
-	private EntityManager entityManager;
-	
-	@Override
-	public TransactionLog insert(Long userSendId, UserRequest req, String type) {
-		TransactionLog transaction = new TransactionLog(); 
-		transaction.setType(type);
-		transaction.setUserSendId(userSendId);
-		transaction.setUserReceiveId(req.getUserReceiveId());
-		transaction.setCoin(req.getTotalCoin());
-		transaction.setServiceId(0L);
-		transaction.setTransactionLog(type);
-		transaction.setCreatAt(new Date());
-		transaction.setUpdateAt(new Date());
-		
-		return transactionLogRepository.save(transaction);
-	}
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ServicesService servicesService;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<TransactionLogDTO> search(Long userId) {
-		return ModelMapperUtil.maps((List) transactionLogRepository.findByUserSendIdOrUserReceiveId(userId, userId), TransactionLogDTO.class);
-	}
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Override
+    public void insertTransfer(Long userSendId, UserRequest req) {
+        User userReceive = userService.findByAddress(req.getAddressReceive());
+        TransactionLog transaction = new TransactionLog();
+        transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+        transaction.setUserSendId(userSendId);
+        transaction.setUserReceiveId(userReceive.getId());
+        transaction.setCoin(req.getTotalCoin());
+        transaction.setServiceId(null);
+        transaction.setTransactionLog(null);
+        transaction.setCreatAt(new Date());
+        transaction.setUpdateAt(new Date());
+        transactionLogRepository.save(transaction);
 
+        TransactionLog transaction2 = new TransactionLog();
+        transaction2.setType(Constants.TransactionType.ADD_COIN.name());
+        transaction2.setUserSendId(userReceive.getId());
+        transaction2.setUserReceiveId(userSendId);
+        transaction2.setCoin(req.getTotalCoin());
+        transaction2.setServiceId(null);
+        transaction2.setTransactionLog(null);
+        transaction2.setCreatAt(new Date());
+        transaction2.setUpdateAt(new Date());
+        transactionLogRepository.save(transaction2);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public TransactionLogReponse search(Long userId) {
+        TransactionLogReponse transactionLogReponse = new TransactionLogReponse();
+        List<TransactionLogDTO> logsVote = new ArrayList<>();
+        List<TransactionLogDTO> logsCoin = new ArrayList<>();
+        List<TransactionLogDTO> logs = ModelMapperUtil.maps((List) transactionLogRepository.search(userId, userId), TransactionLogDTO.class);
+        for (TransactionLogDTO log : logs) {
+            if (log.getServiceId() != null) {
+                ServicesDTO service = servicesService.findById(log.getServiceId());
+                log.setServiceName(service != null ? service.getName() : "");
+            }
+            if (log.getUserSendId() != null) {
+                User user = userService.findById(log.getUserSendId());
+                log.setUserNameReceive(user != null ? user.getName() : "");
+            }
+            if (log.getUserReceiveId() != null) {
+                User user1 = userService.findById(log.getUserReceiveId());
+                log.setUserNameReceive(user1 != null ? user1.getName() : "");
+            }
+            if (log.getType() != null &&
+                    (log.getType().equalsIgnoreCase(Constants.TransactionType.ADD_COIN.name())
+                            || log.getType().equalsIgnoreCase(Constants.TransactionType.SUBTRACTION_COIN.name()))) {
+                logsVote.add(log);
+            } else {
+                logsCoin.add(log);
+            }
+        }
+        transactionLogReponse.setCoinTransactionLog(logsVote);
+        transactionLogReponse.setVoteTransactionLog(logsCoin);
+        return transactionLogReponse;
+    }
 }
