@@ -1,5 +1,6 @@
 package com.feature.gcoin.service.impl;
 
+import com.feature.gcoin.common.constant.Const;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.model.Services;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,23 +88,41 @@ public class ServicesServiceImpl implements ServicesService {
         return resDTO;
     }
 
-    //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin , luu transaction_log
+    public void tranferMoneyToCoin(Long userMoney) {
+
+    }
+
+    //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin mat di , luu transaction_log
+    @Override
+    public void transactionByServices(Long userId, List<ServicesDTO> lstServives) {
+        try { //TODO -- get coins from smartcontact
+            //luong coin hien tai cua user
+            BigInteger userCoin;
+            userCoin = BigInteger.valueOf(1000);
+
+            //tong luong coin ung voi service
+            BigInteger totalCoinsOfService;
+            Long temp = null;
+            for (ServicesDTO services : lstServives) {
+                temp = +(Long) Long.valueOf(services.getPrice()) * services.getTotal() * Const.exchangeRate.longValue();
+            }
+            totalCoinsOfService = BigInteger.valueOf(temp);
+            if (userCoin.compareTo(totalCoinsOfService) < 0) {
+                throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");
+            } else {
+                // TODO -- minus coins from smartcontract
+                userCoin = userCoin.subtract(totalCoinsOfService);
+                log.info("Coin hien tai cua user: " + userCoin);
+            }
+        } catch (Exception ex) {
+            log.error(ex.getMessage(), ex);
+        }
+    }
 
     @Override
-    public boolean transactionByServices(List<Long> lstServivesId, Long userId, String price, String quantiy) {
-        //TODO -- get coins from smartcontact
-        //luong coin hien tai cua user
-        double userCoin = 0;
-        userCoin = 100.0d;
-
-        //tong luong coin ung voi service
-        double totalCoinsOfService = 0;
-        List<Services> lstService = new ArrayList<>();
-        for (Long itemServiceId : lstServivesId) {
-            Services servicesDTO = servicesRepository.findById(itemServiceId);
-//            servicesDTO.
-        }
-
-        return false;
+    public List<ServicesDTO> listOwnedServices(Long userId) {
+        //TODO
+        return new ArrayList<>();
     }
+
 }

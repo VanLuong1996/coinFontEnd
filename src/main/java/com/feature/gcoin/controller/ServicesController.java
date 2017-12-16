@@ -47,9 +47,24 @@ public class ServicesController {
         boolean response = servicesService.deleteById(servicesDTO);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
+
     @RequestMapping(method = PUT, value = "/update/{id}")
-    public ResponseEntity<?> updateServices(@PathVariable Long id,@RequestBody ServicesDTO servicesDTO) {
-        ServicesDTO response = servicesService.updateServices(id,servicesDTO);
+    public ResponseEntity<?> updateServices(@PathVariable Long id, @RequestBody ServicesDTO servicesDTO) {
+        ServicesDTO response = servicesService.updateServices(id, servicesDTO);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
+
+    @RequestMapping(method = POST, value = "/buy/{userId}")
+    public ResponseEntity<?> buyServices(@PathVariable Long userId, @RequestBody List<ServicesDTO> servicesDTOs) {
+        servicesService.transactionByServices(userId, servicesDTOs);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
+    }
+
+    @RequestMapping(method = GET, value = "/listOwnedServices/{userId}")
+    public ResponseEntity<?> listOwnedServices(@PathVariable Long userId) {
+        List<ServicesDTO> responseDTO = servicesService.listOwnedServices(userId);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", responseDTO));
+    }
+
+
 }
