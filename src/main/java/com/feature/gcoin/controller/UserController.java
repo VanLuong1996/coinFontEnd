@@ -6,6 +6,7 @@ import java.security.Principal;
 import java.util.List;
 
 import com.feature.gcoin.dto.reponse.InformationUser;
+import com.feature.gcoin.service.GcoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,30 +19,34 @@ import com.feature.gcoin.service.UserService;
 
 
 @RestController
-@RequestMapping( value = "/api", produces = MediaType.APPLICATION_JSON_VALUE )
+@RequestMapping( value = "/user", produces = MediaType.APPLICATION_JSON_VALUE )
 public class UserController {
 
     @Autowired
     private UserService userService;
 
-    @RequestMapping( method = GET, value = "/user/{userId}" )
+//    @Autowired
+//    private GcoinService gcoinService;
+
+    @RequestMapping( method = GET, value = "/{userId}" )
     public User loadById( @PathVariable Long userId ) {
         return this.userService.findById( userId );
     }
 
-    @RequestMapping( method = GET, value= "/user/all")
+    @RequestMapping( method = GET, value= "/all")
     public List<User> loadAll() {
         return this.userService.findAll();
     }
 
-    @RequestMapping(value = "/get-infor", method = GET)
+    @RequestMapping(value = "/infor/{Id}", method = GET)
     public InformationUser loadInforById( @PathVariable Long userId ) {
         InformationUser informationUser = new InformationUser();
         User user = userService.findById( userId );
         informationUser.setEmail(user.getEmail());
         informationUser.setName(user.getName());
         informationUser.setUserName(user.getUsername());
-        informationUser.setAddress(user.getAddress());
+//        informationUser.setNumberCoin(gcoinService.getCoin(user.getAddress()));
+
         return informationUser;
     }
 }

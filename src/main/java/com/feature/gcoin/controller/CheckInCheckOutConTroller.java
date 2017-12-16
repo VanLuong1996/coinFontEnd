@@ -29,14 +29,15 @@ public class CheckInCheckOutConTroller {
     @Autowired
     private CheckInOutService checkInOutService;
 
-    @RequestMapping(value = "/check-in-out", method = RequestMethod.POST) //post
-    //@PreAuthorize("hasRole('USER')") //quyen thuc hien: user
-    public ResponseEntity<?> checkInOut(@RequestBody CheckInOutRequest checkInOutRequest){
+    @RequestMapping(value = "/timekeeping", method = RequestMethod.POST) //post
+    public ResponseEntity<?> timekeeping(@RequestBody CheckInOutRequest checkInOutRequest){
         Boolean firstCheck = checkInOutService.isTheFistCheckInOut(checkInOutRequest.getUserId());
         if(firstCheck == true) {
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check In Successful", null));
+            checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "In Successful", null));
         }else {
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check Out Successful", null));
+            checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Out Successful", null));
         }
     }
 
