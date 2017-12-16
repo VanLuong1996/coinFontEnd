@@ -38,4 +38,5 @@ public class UserServiceImpl implements UserService {
         List<User> lst = userRepository.login(loginRequest.getUsername(), loginRequest.getPassword());
         return lst != null & lst.size()>0 ? true : false;
     }
+
 }

@@ -32,5 +32,4 @@ public class UserController {
     public List<User> loadAll() {
         return this.userService.findAll();
     }
-
 }
