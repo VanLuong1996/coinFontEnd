@@ -2,7 +2,26 @@
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/Application.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/AspectConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/AuthServerOAuth2Config.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/DatabaseConfiguration.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/OAuth2ResourceServerConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/SecurityConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/SwaggerConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/com/feature/gcoin/config/WebConfig.java</file>
+          <file>jar://$MAVEN_REPOSITORY$/io/springfox/springfox-schema/2.6.1/springfox-schema-2.6.1.jar!/springfox/documentation/schema/configuration/ModelsConfiguration.class</file>
+          <file>file://$MAVEN_REPOSITORY$/io/springfox/springfox-schema/2.6.1/springfox-schema-2.6.1.jar</file>
+          <file>jar://$MAVEN_REPOSITORY$/io/springfox/springfox-spring-web/2.6.1/springfox-spring-web-2.6.1.jar!/springfox/documentation/spring/web/SpringfoxWebMvcConfiguration.class</file>
+          <file>file://$MAVEN_REPOSITORY$/io/springfox/springfox-spring-web/2.6.1/springfox-spring-web-2.6.1.jar</file>
+          <file>jar://$MAVEN_REPOSITORY$/io/springfox/springfox-swagger-common/2.6.1/springfox-swagger-common-2.6.1.jar!/springfox/documentation/swagger/configuration/SwaggerCommonConfiguration.class</file>
+          <file>file://$MAVEN_REPOSITORY$/io/springfox/springfox-swagger-common/2.6.1/springfox-swagger-common-2.6.1.jar</file>
+          <file>jar://$MAVEN_REPOSITORY$/io/springfox/springfox-swagger2/2.6.1/springfox-swagger2-2.6.1.jar!/springfox/documentation/swagger2/configuration/Swagger2DocumentationConfiguration.class</file>
+          <file>file://$MAVEN_REPOSITORY$/io/springfox/springfox-swagger2/2.6.1/springfox-swagger2-2.6.1.jar</file>
+        </fileset>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
@@ -15,26 +34,30 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.springframework.security.oauth:spring-security-oauth2:2.0.12.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: commons-codec:commons-codec:1.10" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" level="project" />
-    <orderEntry type="library" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-ui:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-spring-web:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger2:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.swagger:swagger-annotations:1.5.10" level="project" />
-    <orderEntry type="library" name="Maven: io.swagger:swagger-models:1.5.10" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-spi:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-core:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-schema:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: io.springfox:springfox-swagger-common:2.6.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:18.0" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.plugin:spring-plugin-metadata:1.2.0.RELEASE" level="project" />
-    <orderEntry type="library" name="Maven: org.mapstruct:mapstruct:1.0.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.modelmapper:modelmapper:1.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.5" level="project" />
-    <orderEntry type="library" name="Maven: org.springframework.security:spring-security-core:4.2.3.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:core:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:abi:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:utils:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.bouncycastle:bcprov-jdk15on:1.54" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:crypto:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:rlp:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: org.web3j:tuples:3.2.0" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-unixsocket:0.15" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-ffi:2.1.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jffi:1.2.14" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: com.github.jnr:jffi:native:1.2.14" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-commons:5.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-analysis:5.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-tree:5.0.3" level="project" />
+    <orderEntry type="library" name="Maven: org.ow2.asm:asm-util:5.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-x86asm:1.0.2" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-constants:0.9.6" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-enxio:0.14" level="project" />
+    <orderEntry type="library" name="Maven: com.github.jnr:jnr-posix:3.0.33" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:okhttp:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okio:okio:1.13.0" level="project" />
+    <orderEntry type="library" name="Maven: com.squareup.okhttp3:logging-interceptor:3.8.1" level="project" />
+    <orderEntry type="library" name="Maven: io.reactivex:rxjava:1.2.4" level="project" />
+    <orderEntry type="library" name="Maven: commons-lang:commons-lang:2.3" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter:1.5.4.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-logging:1.5.4.RELEASE" level="project" />
