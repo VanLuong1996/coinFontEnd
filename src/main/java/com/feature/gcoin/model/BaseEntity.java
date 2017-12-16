@@ -3,35 +3,37 @@ package com.feature.gcoin.model;
 import org.joda.time.DateTime;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+@MappedSuperclass
 public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREAT_AT")
-    protected DateTime creatAt;
+    protected Date creatAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "UPDATE_AT")
-    protected DateTime updateAt;
+    protected Date updateAt;
 
     public BaseEntity() {
     }
 
-    public DateTime getCreatAt() {
+    public Date getCreatAt() {
         return creatAt;
     }
 
-    public void setCreatAt(DateTime creatAt) {
+    public void setCreatAt(Date creatAt) {
         this.creatAt = creatAt;
     }
 
-    public DateTime getUpdateAt() {
+    public Date getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(DateTime updateAt) {
+    public void setUpdateAt(Date updateAt) {
         this.updateAt = updateAt;
     }
 }

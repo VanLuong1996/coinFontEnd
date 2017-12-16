@@ -26,8 +26,8 @@ public class TransactionLogServiceImpl implements TransactionLogService {
 		transaction.setCoin(req.getTotalCoin());
 		transaction.setServiceId(0L);
 		transaction.setTransactionLog(type);
-		transaction.setCreateAt(new DateTime());
-		transaction.setUpdateAt(new DateTime());
+		transaction.setCreatAt(new Date());
+		transaction.setUpdateAt(new Date());
 		
 		return transactionLogRepository.save(transaction);
 	}

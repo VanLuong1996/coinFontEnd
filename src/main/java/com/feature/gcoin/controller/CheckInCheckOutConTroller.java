@@ -30,12 +30,12 @@ public class CheckInCheckOutConTroller {
     private CheckInOutService checkInOutService;
 
     @RequestMapping(value = "/timekeeping", method = RequestMethod.POST) //post
-    public ResponseEntity<?> timekeeping(@RequestBody CheckInOutRequest checkInOutRequest){
-        Boolean firstCheck = checkInOutService.isTheFistCheckInOut(checkInOutRequest.getUserId());
-        if(firstCheck == true) {
+    public ResponseEntity<?> timekeeping(@RequestBody CheckInOutRequest checkInOutRequest) throws Exception {
+        boolean firstCheck = checkInOutService.isTheFistCheckInOut(checkInOutRequest.getUserId());
+        if (firstCheck) {
             checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
             return ResponseEntity.ok(new Response(Constants.SUCCESS, "In Successful", null));
-        }else {
+        } else {
             checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
             return ResponseEntity.ok(new Response(Constants.SUCCESS, "Out Successful", null));
         }

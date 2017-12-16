@@ -43,11 +43,6 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
-    @Column(name = "creat_at")
-    private DateTime creatAt;
-
-    @Column(name = "update_at")
-    private DateTime updateAt;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_Password_Reset_Date")
@@ -134,26 +129,6 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    @Override
-    public DateTime getCreatAt() {
-        return creatAt;
-    }
-
-    @Override
-    public void setCreatAt(DateTime creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    @Override
-    public DateTime getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(DateTime updateAt) {
-        this.updateAt = updateAt;
     }
 
 
