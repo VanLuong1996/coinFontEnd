@@ -26,7 +26,7 @@ public class GcoinUtil {
         web3j = Web3j.build(new HttpService());
         log.info("Connected to Ethereum client version: "
                 + web3j.web3ClientVersion().send().getWeb3ClientVersion());
-        credentials =Credentials.create("57f47d0fbea16b6bb115b598a8f608b1fb30dd81b6e5cf944385128caed6d79c");
+        credentials =Credentials.create("3988dc117e5f3bdb4a7ce82f2b837e29e3a3f3b28c910df67b361116f316d578");
 
     }
 

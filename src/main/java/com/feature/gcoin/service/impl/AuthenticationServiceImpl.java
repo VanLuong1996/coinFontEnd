@@ -11,6 +11,8 @@ import com.feature.gcoin.dto.reponse.UserLoginResponse;
 import com.feature.gcoin.dto.request.LoginRequest;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.service.AuthenticationService;
+import com.feature.gcoin.service.GcoinService;
+import com.feature.gcoin.service.GemVoteService;
 import com.feature.gcoin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -31,40 +33,43 @@ import java.util.Date;
  * @CreatedDate Oct 9, 2017 2:11:09 PM
  */
 @Service
-public class AuthenticationServiceImpl implements AuthenticationService
-{
+public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private GcoinService gcoinService;
+    @Autowired
+    private GemVoteService gemVoteService;
 
     @Override
-    public UserLoginResponse authenticate(LoginRequest loginRequest, HttpServletRequest request) throws BusinessException
-    {
+    public UserLoginResponse authenticate(LoginRequest loginRequest, HttpServletRequest request) throws BusinessException {
         String userName = loginRequest.getUsername();
         String password = loginRequest.getPassword();
         String clientIp = request.getRemoteAddr();
         //System.out.println("password: "+password +";passwordEncoder: "+passwordEncoder.encode(password));
-        if ("".equals(userName) || "".equals(password))
-        {
+        if ("".equals(userName) || "".equals(password)) {
             throw new BusinessException(ExceptionCode.Authentication.AUTHENTICATION_USER_PASSWORD_INVALID, "UserName or Password invalid. please check again!", new Throwable(""));
         }
 
         User userEntity = userService.findByUsername(loginRequest.getUsername());
-        if (userEntity == null)
-        {
+        if (userEntity == null) {
             throw new BusinessException(ExceptionCode.Authentication.AUTHENTICATION_USER_PASSWORD_INVALID, "UserName or Password invalid. please check again!", new Throwable(""));
         }
 
         boolean isAuthen = userService.login(loginRequest);
-        if (isAuthen)
-        {
+        if (isAuthen) {
             UserLoginResponse response = new UserLoginResponse();
             response.setUserName(userName);
             UserDTO userDTO = ModelMapperUtil.map(userEntity, UserDTO.class);
-            userDTO.setNumberCoin(BigInteger.valueOf(10));
             userDTO.setPriceCoin(BigInteger.valueOf(10000));
-            userDTO.setNumberVote(10000);
+            try {
+                userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
+                userDTO.setNumberCoin(gcoinService.getCoin(userDTO.getAddress()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             response.setUserDTO(userDTO);
             return response;
         }

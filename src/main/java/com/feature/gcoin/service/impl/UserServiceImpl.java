@@ -1,8 +1,13 @@
 package com.feature.gcoin.service.impl;
 
+import java.math.BigInteger;
 import java.util.List;
 
+import com.feature.gcoin.common.util.ModelMapperUtil;
+import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.request.LoginRequest;
+import com.feature.gcoin.service.GcoinService;
+import com.feature.gcoin.service.GemVoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,6 +22,10 @@ import com.feature.gcoin.service.UserService;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private GcoinService gcoinService;
+    @Autowired
+    private GemVoteService gemVoteService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -41,13 +50,26 @@ public class UserServiceImpl implements UserService {
     public boolean login(LoginRequest loginRequest) {
         List<User> lst = userRepository.login(loginRequest.getUsername(), loginRequest.getPassword());
 //        List<User> lst = userRepository.login(loginRequest.getUsername(), passwordEncoder.encode(loginRequest.getPassword()));
-        return lst != null & lst.size()>0 ? true : false;
+        return lst != null & lst.size() > 0 ? true : false;
     }
 
     @Override
     public User findByAddress(String addressReceive) {
         List<User> lst = userRepository.findByAddress(addressReceive);
-        return lst != null & lst.size()>0 ? lst.get(0) : null;
+        return lst != null & lst.size() > 0 ? lst.get(0) : null;
+    }
+
+    @Override
+    public UserDTO getCoins(User user) {
+        UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
+        try {
+            userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
+            userDTO.setNumberCoin(gcoinService.getCoin(userDTO.getAddress()));
+            userDTO.setPriceCoin(BigInteger.valueOf(10000));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return userDTO;
     }
 
 }

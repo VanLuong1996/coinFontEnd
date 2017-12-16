@@ -2,6 +2,7 @@ package com.feature.gcoin.service;
 
 import java.util.List;
 
+import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.VoteDTO;
 import com.feature.gcoin.dto.request.LoginRequest;
 import com.feature.gcoin.model.User;
@@ -18,4 +19,6 @@ public interface UserService {
 	boolean login(LoginRequest loginRequest);
 
     User findByAddress(String addressReceive);
+
+	UserDTO getCoins(User user);
 }

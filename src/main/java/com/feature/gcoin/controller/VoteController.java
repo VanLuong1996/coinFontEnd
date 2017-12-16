@@ -12,14 +12,17 @@ import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
 import com.feature.gcoin.service.UserService;
 import com.feature.gcoin.service.VoteService;
+import com.feature.gcoin.util.GemVoteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.web3j.crypto.CipherException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +74,9 @@ public class VoteController {
 //    }
 
     @RequestMapping(method = POST, value = "/openSessionVote")
-    public ResponseEntity<?> openSessionVote() {
+    public ResponseEntity<?> openSessionVote() throws Exception {
+        GemVoteUtil.loadWeb3j();
+        GemVoteUtil.deloyGemVote();
         boolean response = voteService.openSessionVote();
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }

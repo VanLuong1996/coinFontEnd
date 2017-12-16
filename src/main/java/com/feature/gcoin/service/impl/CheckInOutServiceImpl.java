@@ -41,8 +41,9 @@ public class CheckInOutServiceImpl implements CheckInOutService{
             checkInOut.setUserId(userId);
         } else {
             checkInOut.setCheckOutTime(date);
-            checkInOut.setCreatAt(date);
+            checkInOut.setUpdateAt(date);
             checkInOut.setUserId(userId);
+            //them 1 coin
         }
         checkInOutRepositoty.save(checkInOut);
     }

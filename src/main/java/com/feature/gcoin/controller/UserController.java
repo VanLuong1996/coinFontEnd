@@ -4,6 +4,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.math.BigInteger;
 
+import com.feature.gcoin.common.exception.BusinessException;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
@@ -80,15 +81,13 @@ public class UserController {
 
     @RequestMapping(value = "/getCoins", method = GET)
     public UserDTO getCoins(HttpServletRequest req) {
+
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
 
         User user = userService.findByUsername(username);
-        UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
-        userDTO.setNumberVote(10000);
-        userDTO.setNumberCoin(BigInteger.valueOf(10));
-        userDTO.setPriceCoin(BigInteger.valueOf(10000));
-        return userDTO;
+
+        return userService.getCoins(user) ;
     }
 
 

@@ -1,5 +1,6 @@
 package com.feature.gcoin.service.impl;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +12,7 @@ import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.TransactionLogDTO;
 import com.feature.gcoin.dto.reponse.TransactionLogReponse;
 import com.feature.gcoin.model.User;
-import com.feature.gcoin.service.ServicesService;
-import com.feature.gcoin.service.UserService;
+import com.feature.gcoin.service.*;
 import org.mapstruct.MapperConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.feature.gcoin.dto.request.UserRequest;
 import com.feature.gcoin.model.TransactionLog;
 import com.feature.gcoin.repository.TransactionLogRepository;
-import com.feature.gcoin.service.TransactionLogService;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,17 +37,28 @@ public class TransactionLogServiceImpl implements TransactionLogService {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @Autowired
+    private GcoinService gcoinService;
+    @Autowired
+    private GemVoteService gemVoteService;
 
     @Override
     public void insertTransfer(Long userSendId, UserRequest req) {
+        String log =null;
+        User userSend = userService.findById(userSendId);
         User userReceive = userService.findByAddress(req.getAddressReceive());
+        try {
+           log= gcoinService.transferCoin(userSend.getAddress(), userReceive.getAddress(), BigInteger.valueOf(req.getTotalCoin()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         TransactionLog transaction = new TransactionLog();
         transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
         transaction.setUserSendId(userSendId);
         transaction.setUserReceiveId(userReceive.getId());
         transaction.setCoin(req.getTotalCoin());
         transaction.setServiceId(null);
-        transaction.setTransactionLog(null);
+        transaction.setTransactionLog(log);
         transaction.setCreatAt(new Date());
         transaction.setUpdateAt(new Date());
         transactionLogRepository.save(transaction);
@@ -59,7 +69,7 @@ public class TransactionLogServiceImpl implements TransactionLogService {
         transaction2.setUserReceiveId(userSendId);
         transaction2.setCoin(req.getTotalCoin());
         transaction2.setServiceId(null);
-        transaction2.setTransactionLog(null);
+        transaction2.setTransactionLog(log);
         transaction2.setCreatAt(new Date());
         transaction2.setUpdateAt(new Date());
         transactionLogRepository.save(transaction2);

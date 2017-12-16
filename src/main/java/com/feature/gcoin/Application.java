@@ -1,5 +1,7 @@
 package com.feature.gcoin;
 
+import com.feature.gcoin.smartcontract.Gcoin;
+import com.feature.gcoin.util.GcoinUtil;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +23,8 @@ public class Application  extends SpringBootServletInitializer {
 
 	public static void main(String[] args) throws Exception {
 		SpringApplication.run(Application.class, args);
+		GcoinUtil.loadWeb3j();
+		GcoinUtil.deloyGcoin();
 	}
 }
 
