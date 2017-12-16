@@ -10,11 +10,11 @@ public interface ServicesRepository extends JpaRepository<Services, Long> {
 
     List<Services> findAll();
 
-    ServicesDTO findById(Long id);
+    Services save(Services services);
 
-    boolean deleteById(Long id);
+    Services findById(Long id);
 
-    boolean deleteServicesById(Long id);
+    void deleteServicesById(Long id);
 
 //    ServicesDTO addServiceDTO(ServicesDTO servicesDTO);
 }
