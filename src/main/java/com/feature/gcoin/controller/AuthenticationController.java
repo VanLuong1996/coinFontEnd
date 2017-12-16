@@ -8,8 +8,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.feature.gcoin.dto.RequestObject;
+import com.feature.gcoin.common.exception.BusinessException;
+import com.feature.gcoin.dto.reponse.UserLoginResponse;
+import com.feature.gcoin.dto.request.LoginRequest;
 import com.feature.gcoin.dto.UserTokenState;
+import com.feature.gcoin.security.auth.JwtAuthenticationRequest;
+import com.feature.gcoin.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +27,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.feature.gcoin.common.DeviceProvider;
-import com.feature.gcoin.dto.ResponseObject;
+import com.feature.gcoin.dto.reponse.Response;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
-import com.feature.gcoin.service.impl.CustomUserDetailsService;
+import com.feature.gcoin.service.impl.CustomUserDetailsServiceImpl;
 
 
 @RestController
-@RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/auth")
 public class AuthenticationController {
 
     @Autowired
@@ -40,18 +44,21 @@ public class AuthenticationController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private CustomUserDetailsService userDetailsService;
+    private CustomUserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     @Autowired
     private DeviceProvider deviceProvider;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
-            //@RequestBody JwtAuthenticationRequest authenticationRequest,
-            @RequestBody RequestObject requestObject,
+            LoginRequest loginRequest,
+            HttpServletRequest request,
             HttpServletResponse response,
             Device device
-    ) throws AuthenticationException, IOException {
+    ) throws AuthenticationException, IOException, BusinessException {
 
         // Perform the security
 //        final Authentication authentication = authenticationManager.authenticate(
@@ -65,12 +72,11 @@ public class AuthenticationController {
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // token creation
-//        User user = (User)authentication.getPrincipal();
-//        String jws = tokenHelper.generateToken( user.getUsername(), device);
-//        int expiresIn = tokenHelper.getExpiredIn(device);
-//        // Return the token
-//        return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
-        return ResponseEntity.ok(new UserTokenState("access_token", 342243));
+        UserLoginResponse userLoginResponse = authenticationService.authenticate(loginRequest, request);
+        String jws = tokenHelper.generateToken(userLoginResponse.getUserName(), device);
+        int expiresIn = tokenHelper.getExpiredIn(device);
+        // Return the token
+        return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -100,13 +106,13 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<ResponseObject> changePassword(@RequestBody PasswordChanger passwordChanger) {
+    public ResponseEntity<Response> changePassword(@RequestBody PasswordChanger passwordChanger) {
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         Map<String, String> result = new HashMap<>();
         result.put("result", "success");
-        ResponseObject responseObject = new ResponseObject();
-        responseObject.setResult(result);
-        return ResponseEntity.accepted().body(responseObject);
+        Response response = new Response();
+        response.setResult(result);
+        return ResponseEntity.accepted().body(response);
     }
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)

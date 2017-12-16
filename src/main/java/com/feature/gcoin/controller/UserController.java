@@ -33,14 +33,4 @@ public class UserController {
         return this.userService.findAll();
     }
 
-
-    /*
-     *  We are not using userService.findByUsername here(we could),
-     *  so it is good that we are making sure that the user has role "ROLE_USER"
-     *  to access this endpoint.
-     */
-    @RequestMapping("/whoami")
-    public User user(Principal user) {
-        return this.userService.findByUsername(user.getName());
-    }
 }

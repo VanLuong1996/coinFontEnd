@@ -1,7 +1,7 @@
 package com.feature.gcoin.common.util;
 
 /**
- * @author GEM
+ * @author TienNV
  * @CreatedDate Oct 4, 2017 2:43:55 PM
  */
 public interface Constants {
