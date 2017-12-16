@@ -16,4 +16,6 @@ public interface UserService {
 	List<User> findAll();
 
 	boolean login(LoginRequest loginRequest);
+
+    User findByAddress(String addressReceive);
 }

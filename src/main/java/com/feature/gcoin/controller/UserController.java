@@ -61,16 +61,17 @@ public class UserController {
 
     @RequestMapping(method = RequestMethod.POST, value = "/transferCoin")
 //    @PreAuthorize("hasAnyAuthority('USER')")
-    public ResponseEntity<Response> transferCoin(@RequestBody UserRequest req, HttpServletRequest httpServletRequest) throws GcoinException {
+    public ResponseEntity<?> transferCoin(@RequestBody UserRequest req, HttpServletRequest httpServletRequest) throws GcoinException {
         try {
             String token = tokenHelper.getToken(httpServletRequest);
             String username = tokenHelper.getUsernameFromToken(token);
             User user = userService.findByUsername(username);
-            TransactionLog result = transactionLogService.insert(user.getId(), req, Constants.TransactionType.TRANSFER_COIN.name());
-            Response response = new Response(Constants.ResponseCode.OK.getValue(), Constants.ResponseCode.OK.getDisplay(), result);
+            transactionLogService.insertTransfer(user.getId(), req);
+            Response response = new Response(Constants.ResponseCode.OK.getValue(), Constants.ResponseCode.OK.getDisplay(), null);
             return ResponseEntity.ok(response);
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             throw new GcoinException(Constants.ExceptionCode.Unknown.getValue(), ex.toString());
         }
     }
@@ -80,7 +81,6 @@ public class UserController {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
 
-        InformationUser informationUser = new InformationUser();
         User user = userService.findByUsername(username);
         UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
         userDTO.setNumberVote(10000);

@@ -13,8 +13,8 @@ public class UserRequest implements Serializable {
 	@JsonProperty("totalCoin")
 	private Long totalCoin;
 	
-	@JsonProperty("user_receive_id")
-	private Long userReceiveId;
+	@JsonProperty("addressReceive")
+	private String addressReceive;
 
 	public Long getTotalCoin() {
 		return totalCoin == null ? 0L : totalCoin;
@@ -24,13 +24,11 @@ public class UserRequest implements Serializable {
 		this.totalCoin = totalCoin;
 	}
 
-	public Long getUserReceiveId() {
-		return userReceiveId == null ? 0L : userReceiveId;
+	public String getAddressReceive() {
+		return addressReceive;
 	}
 
-	public void setUserReceiveId(Long userReceiveId) {
-		this.userReceiveId = userReceiveId;
+	public void setAddressReceive(String addressReceive) {
+		this.addressReceive = addressReceive;
 	}
-
-
 }

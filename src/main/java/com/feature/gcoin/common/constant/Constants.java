@@ -6,7 +6,7 @@ package com.feature.gcoin.common.constant;
 public interface Constants {
 	
 	public enum TransactionType{
-		ADD_COIN(),
+		ADD_COIN,
 		SUBTRACTION_COIN,
 		TRANSFER_COIN,
 		VOTE
