@@ -65,4 +65,10 @@ public class CheckInOutServiceImpl implements CheckInOutService{
             }
         }
     }
+
+    @Override
+    public List<CheckInOut> getHistoryOfUser(Long userId){
+        List<CheckInOut> history = checkInOutRepositoty.findByUserId(userId);
+        return history;
+    }
 }

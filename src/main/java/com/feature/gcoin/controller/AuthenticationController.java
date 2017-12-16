@@ -3,6 +3,7 @@ package com.feature.gcoin.controller;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +14,11 @@ import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.reponse.UserLoginResponse;
 import com.feature.gcoin.dto.request.LoginRequest;
 import com.feature.gcoin.dto.UserTokenState;
+import com.feature.gcoin.model.CheckInOut;
 import com.feature.gcoin.security.auth.JwtAuthenticationRequest;
 import com.feature.gcoin.service.AuthenticationService;
+import com.feature.gcoin.service.CheckInOutService;
+import com.feature.gcoin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +40,8 @@ import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.impl.CustomUserDetailsServiceImpl;
 
+import static org.springframework.web.bind.annotation.RequestMethod.GET;
+
 
 @RestController
 @RequestMapping(value = "/auth")
@@ -55,6 +61,13 @@ public class AuthenticationController {
 
     @Autowired
     private DeviceProvider deviceProvider;
+
+
+    @Autowired
+    private CheckInOutService checkInOutService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
@@ -144,6 +157,19 @@ public class AuthenticationController {
         Response response = new Response();
         response.setResult(result);
         return ResponseEntity.accepted().body(response);
+    }
+
+    @RequestMapping(value = "/getHistory", method = RequestMethod.GET)
+    public List<CheckInOut> loadHistory(HttpServletRequest req) {
+        Authentication currentUser = SecurityContextHolder.getContext().getAuthentication();
+        String username = currentUser.getName();
+        User user = userService.findByUsername(username);
+        List<CheckInOut> listResult = checkInOutService.getHistoryOfUser(user.getId());
+        if(listResult.size() > 0){
+            return listResult;
+        }else {
+            return null;
+        }
     }
 
     static class PasswordChanger {
