@@ -8,12 +8,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class UserDTO extends BaseDTO{
+public class UserDTO extends BaseDTO {
 
     private Long id; //id 1
 
@@ -30,6 +31,26 @@ public class UserDTO extends BaseDTO{
     private String phone;
 
     private String address;
+
+    private BigInteger numberCoin; // address
+
+    private BigInteger priceCoin; // address
+
+    public BigInteger getNumberCoin() {
+        return numberCoin;
+    }
+
+    public void setNumberCoin(BigInteger numberCoin) {
+        this.numberCoin = numberCoin;
+    }
+
+    public BigInteger getPriceCoin() {
+        return priceCoin;
+    }
+
+    public void setPriceCoin(BigInteger priceCoin) {
+        this.priceCoin = priceCoin;
+    }
 
     public UserDTO() {
     }
