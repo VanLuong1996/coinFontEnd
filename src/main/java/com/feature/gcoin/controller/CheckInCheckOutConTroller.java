@@ -40,5 +40,4 @@ public class CheckInCheckOutConTroller {
             return ResponseEntity.ok(new Response(Constants.SUCCESS, "Out Successful", null));
         }
     }
-
 }
