@@ -6,7 +6,9 @@ public class InformationUser {
     String userName; //ten dang nhap
     String email;//mail
     String name; //name
+    String address; //name
     BigInteger numberCoin; // address
+    BigInteger priceCoin; // address
 
     public String getUserName() {
         return userName;
@@ -38,5 +40,21 @@ public class InformationUser {
 
     public void setNumberCoin(BigInteger numberCoin) {
         this.numberCoin = numberCoin;
+    }
+
+    public BigInteger getPriceCoin() {
+        return priceCoin;
+    }
+
+    public void setPriceCoin(BigInteger priceCoin) {
+        this.priceCoin = priceCoin;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

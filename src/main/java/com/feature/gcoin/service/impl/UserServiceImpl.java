@@ -6,6 +6,7 @@ import com.feature.gcoin.dto.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.feature.gcoin.model.User;
@@ -16,6 +17,9 @@ import com.feature.gcoin.service.UserService;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User findById(Long id) throws AccessDeniedException {
         User u = userRepository.findOne(id);
@@ -35,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(LoginRequest loginRequest) {
-        List<User> lst = userRepository.login(loginRequest.getUsername(), loginRequest.getPassword());
+        List<User> lst = userRepository.login(loginRequest.getUsername(), passwordEncoder.encode(loginRequest.getPassword()));
         return lst != null & lst.size()>0 ? true : false;
     }
 

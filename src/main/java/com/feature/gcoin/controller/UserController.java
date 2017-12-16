@@ -57,8 +57,8 @@ public class UserController {
 //        return this.userService.findAll();
 //    }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/user/transferCoin")
-    @PreAuthorize("hasAnyAuthority('USER')")
+    @RequestMapping(method = RequestMethod.POST, value = "/transferCoin")
+//    @PreAuthorize("hasAnyAuthority('USER')")
     public ResponseEntity<Response> transferCoin(@RequestBody UserRequest req, HttpServletRequest httpServletRequest) throws GcoinException {
         try {
             String token = tokenHelper.getToken(httpServletRequest);
@@ -81,10 +81,11 @@ public class UserController {
         InformationUser informationUser = new InformationUser();
         User user = userService.findByUsername(username);
         informationUser.setEmail(user.getEmail());
+        informationUser.setAddress(user.getAddress());
         informationUser.setName(user.getName());
         informationUser.setUserName(user.getUsername());
         informationUser.setNumberCoin(BigInteger.valueOf(10));
-//        informationUser.setNumberCoin(user.getAddress().toString());
+        informationUser.setPriceCoin(BigInteger.valueOf(10000));
         return informationUser;
     }
 

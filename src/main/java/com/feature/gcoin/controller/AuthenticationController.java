@@ -118,21 +118,22 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/sign-out", method = RequestMethod.POST)
 //    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Response> signOut(@RequestBody LoginRequest loginRequest) {
-        Map<String, String> result = new HashMap<>();
-        result.put("result", "Successful");
-        Response response = new Response();
-        response.setResult(result);
-        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
-    }
+    public ResponseEntity<?> signOut( HttpServletRequest request) {
+        String authToken = tokenHelper.getToken( request );
 
-    @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-//    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<?> signUp(@RequestBody User user) {
-        userDetailsService.signUp(user);
-        Map<String, String> result = new HashMap<>();
-        result.put("result", "Successful");
-        return ResponseEntity.accepted().body(result);
+        Device device = deviceProvider.getCurrentDevice(request);
+
+        if (authToken != null) {
+
+            // TODO check user password last update
+            String refreshedToken = tokenHelper.refreshToken(authToken, device);
+            Long expiresIn = tokenHelper.getExpiredIn(device);
+
+            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+        } else {
+            UserTokenState userTokenState = new UserTokenState();
+            return ResponseEntity.accepted().body(userTokenState);
+        }
     }
 
     static class PasswordChanger {
