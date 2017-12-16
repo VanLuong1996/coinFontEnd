@@ -44,4 +44,10 @@ public class UserServiceImpl implements UserService {
         return lst != null & lst.size()>0 ? true : false;
     }
 
+    @Override
+    public User findByAddress(String addressReceive) {
+        List<User> lst = userRepository.findByAddress(addressReceive);
+        return lst != null & lst.size()>0 ? lst.get(0) : null;
+    }
+
 }

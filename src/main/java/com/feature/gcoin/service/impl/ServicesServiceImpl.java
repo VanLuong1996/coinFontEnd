@@ -3,6 +3,7 @@ package com.feature.gcoin.service.impl;
 import com.feature.gcoin.common.constant.Const;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.ServicesDTO;
+import com.feature.gcoin.dto.request.ServiceRequest;
 import com.feature.gcoin.model.Services;
 import com.feature.gcoin.repository.ServicesRepository;
 import com.feature.gcoin.service.ServicesService;
@@ -94,16 +95,19 @@ public class ServicesServiceImpl implements ServicesService {
 
     //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin mat di , luu transaction_log
     @Override
-    public void transactionByServices(Long userId, ServicesDTO servicesDTO) {
+    public void transactionByServices(Long userId, ServiceRequest serviceRequest) {
         try { //TODO -- get coins from smartcontact
             //luong coin hien tai cua user
             BigInteger userCoin;
             userCoin = BigInteger.valueOf(1000);
-
+            Services services = servicesRepository.findById(serviceRequest.getServiceId());
+            if (services == null) {
+                throw new Exception("dich vu null");
+            }
             //tong luong coin ung voi service
             BigInteger totalCoinsOfService;
             Long temp = null;
-            temp = +(Long) Long.valueOf(servicesDTO.getPrice()) * servicesDTO.getTotal() * Const.exchangeRate.longValue();
+            temp = (Long) services.getPrice() * serviceRequest.getTotal() * Const.exchangeRate.longValue();
             totalCoinsOfService = BigInteger.valueOf(temp);
             if (userCoin.compareTo(totalCoinsOfService) < 0) {
                 throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");

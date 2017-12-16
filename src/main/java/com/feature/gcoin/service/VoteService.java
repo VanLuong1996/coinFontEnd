@@ -19,7 +19,7 @@ public interface VoteService {
 
     int getNumberOfVote(String address);
 
-    boolean voteToStaff(VoteDTO voteDTO);
+    boolean voteToStaff(String addressVoter, String candidate);
 
     boolean openSessionVote();
 }
