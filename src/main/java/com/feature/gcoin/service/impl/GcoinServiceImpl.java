@@ -2,9 +2,11 @@ package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.util.GcoinUtil;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 
+@Service
 public class GcoinServiceImpl implements GcoinService {
 
     //add coin to user

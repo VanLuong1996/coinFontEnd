@@ -2,12 +2,14 @@ package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.service.GemVoteService;
 import com.feature.gcoin.util.GemVoteUtil;
+import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 
 /**
  * Created by vanluong on 16/12/2017.
  */
+@Service
 public class GemVoteServiceImpl implements GemVoteService {
     @Override
     public BigInteger getVoteCountByAddress(String address) throws Exception {
