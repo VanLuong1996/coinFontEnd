@@ -8,7 +8,7 @@ import com.feature.gcoin.model.TransactionLog;
 import java.util.List;
 
 public interface TransactionLogService {
-	public void insertTransfer(Long id, UserRequest req);
+	public void insertTransfer(Long id, UserRequest req) throws Exception;
 
 	TransactionLogReponse search(Long userId);
 }

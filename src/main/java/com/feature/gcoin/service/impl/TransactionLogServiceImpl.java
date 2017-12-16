@@ -43,36 +43,41 @@ public class TransactionLogServiceImpl implements TransactionLogService {
     private GemVoteService gemVoteService;
 
     @Override
-    public void insertTransfer(Long userSendId, UserRequest req) {
-        String log =null;
+    public void insertTransfer(Long userSendId, UserRequest req) throws Exception {
+        String log = null;
         User userSend = userService.findById(userSendId);
         User userReceive = userService.findByAddress(req.getAddressReceive());
-        try {
-           log = gcoinService.transferCoin(userSend.getAddress(), userReceive.getAddress(), BigInteger.valueOf(req.getTotalCoin()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        TransactionLog transaction = new TransactionLog();
-        transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
-        transaction.setUserSendId(userSendId);
-        transaction.setUserReceiveId(userReceive.getId());
-        transaction.setCoin(req.getTotalCoin());
-        transaction.setServiceId(null);
-        transaction.setTransactionLog(log);
-        transaction.setCreatAt(new Date());
-        transaction.setUpdateAt(new Date());
-        transactionLogRepository.save(transaction);
+        BigInteger userCoin = gcoinService.getCoin(userSend.getAddress());
+        if (userCoin.compareTo(BigInteger.valueOf(req.getTotalCoin())) < 0) {
+            throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");
+        } else {
+            try {
+                log = gcoinService.transferCoin(userSend.getAddress(), userReceive.getAddress(), BigInteger.valueOf(req.getTotalCoin()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            TransactionLog transaction = new TransactionLog();
+            transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+            transaction.setUserSendId(userSendId);
+            transaction.setUserReceiveId(userReceive.getId());
+            transaction.setCoin(req.getTotalCoin());
+            transaction.setServiceId(null);
+            transaction.setTransactionLog(log);
+            transaction.setCreatAt(new Date());
+            transaction.setUpdateAt(new Date());
+            transactionLogRepository.save(transaction);
 
-        TransactionLog transaction2 = new TransactionLog();
-        transaction2.setType(Constants.TransactionType.ADD_COIN.name());
-        transaction2.setUserSendId(userReceive.getId());
-        transaction2.setUserReceiveId(userSendId);
-        transaction2.setCoin(req.getTotalCoin());
-        transaction2.setServiceId(null);
-        transaction2.setTransactionLog(log);
-        transaction2.setCreatAt(new Date());
-        transaction2.setUpdateAt(new Date());
-        transactionLogRepository.save(transaction2);
+            TransactionLog transaction2 = new TransactionLog();
+            transaction2.setType(Constants.TransactionType.ADD_COIN.name());
+            transaction2.setUserSendId(userReceive.getId());
+            transaction2.setUserReceiveId(userSendId);
+            transaction2.setCoin(req.getTotalCoin());
+            transaction2.setServiceId(null);
+            transaction2.setTransactionLog(log);
+            transaction2.setCreatAt(new Date());
+            transaction2.setUpdateAt(new Date());
+            transactionLogRepository.save(transaction2);
+        }
     }
 
     @SuppressWarnings("unchecked")
