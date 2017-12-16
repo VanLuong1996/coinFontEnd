@@ -2,7 +2,7 @@ package com.feature.gcoin.dto;
 
 import java.util.Date;
 
-public class ServiceDTO {
+public class ServicesDTO {
 
     private Long id;
 
