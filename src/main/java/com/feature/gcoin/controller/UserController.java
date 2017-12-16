@@ -83,10 +83,7 @@ public class UserController {
         InformationUser informationUser = new InformationUser();
         User user = userService.findByUsername(username);
         UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
-//        informationUser.setEmail(user.getEmail());
-//        informationUser.setAddress(user.getAddress());
-//        informationUser.setName(user.getName());
-//        informationUser.setUserName(user.getUsername());
+        userDTO.setNumberVote(10000);
         userDTO.setNumberCoin(BigInteger.valueOf(10));
         userDTO.setPriceCoin(BigInteger.valueOf(10000));
         return userDTO;
