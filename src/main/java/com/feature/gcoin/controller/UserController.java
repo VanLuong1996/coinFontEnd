@@ -13,6 +13,7 @@ import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.service.GemVoteService;
 import com.feature.gcoin.util.GcoinUtil;
+import com.feature.gcoin.util.GemVoteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
-public class UserController {
+public class UserController
+{
 
     @Autowired
     private UserService userService;
@@ -59,33 +61,19 @@ public class UserController {
 //    private GcoinService gcoinService;
 
     @RequestMapping(method = GET, value = "")
-    public User loadById(HttpServletRequest req) {
+    public User loadById(HttpServletRequest req)
+    {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         return userService.findByUsername(username);
     }
 
-    @RequestMapping(method = GET, value = "")
-    public void testCoin(HttpServletRequest req) throws Exception
-    {
-        GcoinUtil.loadWeb3j();
-        GcoinUtil.deloyGcoin();
-
-        gcoinService.addCoin("0xdc04977a2078c8ffdf086d618d1f961b6c546222", BigInteger.valueOf(10000));
-        BigInteger a = gcoinService.getCoin("0xdc04977a2078c8ffdf086d618d1f961b6c546222");
-
-    }
-
-
-//    @RequestMapping(method = GET, value = "/all")
-//    public List<User> loadAll() {
-//        return this.userService.findAll();
-//    }
-
     @RequestMapping(method = RequestMethod.POST, value = "/transferCoin")
 //    @PreAuthorize("hasAnyAuthority('USER')")
-    public ResponseEntity<Response> transferCoin(@RequestBody UserRequest req, HttpServletRequest httpServletRequest) throws GcoinException {
-        try {
+    public ResponseEntity<Response> transferCoin(@RequestBody UserRequest req, HttpServletRequest httpServletRequest) throws GcoinException
+    {
+        try
+        {
             String token = tokenHelper.getToken(httpServletRequest);
             String username = tokenHelper.getUsernameFromToken(token);
             User user = userService.findByUsername(username);
@@ -93,13 +81,16 @@ public class UserController {
             Response response = new Response(Constants.ResponseCode.OK.getValue(), Constants.ResponseCode.OK.getDisplay(), result);
             return ResponseEntity.ok(response);
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             throw new GcoinException(Constants.ExceptionCode.Unknown.getValue(), ex.toString());
         }
     }
 
     @RequestMapping(value = "/getCoins", method = GET)
-    public UserDTO getCoins(HttpServletRequest req) {
+    public UserDTO getCoins(HttpServletRequest req)
+    {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
 

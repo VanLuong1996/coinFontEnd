@@ -26,7 +26,7 @@ public class GcoinServiceImpl implements GcoinService {
     //get coins of user by address
     @Override
     public BigInteger getCoin(String address) throws Exception {
-        return new BigInteger(GcoinUtil.gcoin.getBalance(address).send().toString());
+        return GcoinUtil.gcoin.getBalance(address).send();
     }
 
     //minus coins of user by address

@@ -14,4 +14,6 @@ public interface GemVoteService {
 
     String getUserWin() throws Exception;
 
+    String addCandidate(String address) throws Exception;
+
 }

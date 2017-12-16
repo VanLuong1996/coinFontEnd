@@ -31,4 +31,10 @@ public class GemVoteServiceImpl implements GemVoteService {
     public String getUserWin() throws Exception {
         return GemVoteUtil.gemVote.getUserWin().send().toString();
     }
+
+    @Override
+    public String addCandidate(String address) throws Exception
+    {
+       return GemVoteUtil.gemVote.addProposal(address).send().getBlockHash();
+    }
 }

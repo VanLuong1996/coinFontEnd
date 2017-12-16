@@ -59,7 +59,7 @@ contract GemVote {
         for (uint i = 0; i < proposals.length; i++) {
             if (proposals[i].adProposal == adProposal) {
                 proposals[i].voteCount += 1;
-                voter.isVoted = false;
+                voter.isVoted = true;
             }
         }
 
