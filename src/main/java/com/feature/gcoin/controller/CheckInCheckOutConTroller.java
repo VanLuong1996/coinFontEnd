@@ -39,11 +39,10 @@ public class CheckInCheckOutConTroller {
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
         boolean firstCheck = checkInOutService.isTheFistCheckInOut(user.getId());
+        checkInOutService.updateInforCheckInOut(user.getId(), firstCheck);
         if (firstCheck) {
-            checkInOutService.updateInforCheckInOut(user.getId());
             return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check In Successful", null));
         } else {
-            checkInOutService.updateInforCheckInOut(user.getId());
             return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check Out Successful", null));
         }
     }

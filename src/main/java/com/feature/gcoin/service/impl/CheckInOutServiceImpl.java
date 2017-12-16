@@ -1,6 +1,7 @@
 package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.common.TimeProvider;
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.model.CheckInOut;
 import com.feature.gcoin.model.TransactionLog;
@@ -23,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class CheckInOutServiceImpl implements CheckInOutService{
+public class CheckInOutServiceImpl implements CheckInOutService {
 
     @Autowired
     private CheckInOutRepositoty checkInOutRepositoty;
@@ -36,57 +37,55 @@ public class CheckInOutServiceImpl implements CheckInOutService{
     @Autowired
     private TransactionLogRepository transactionLogRepository;
 
-    private TransactionLog transactionLog = new TransactionLog();
-
     @Override
-    public void updateInforCheckInOut(Long userId) throws Exception {
-        CheckInOut checkInOut = new CheckInOut();
-        CheckInOut checkInOutTemp = new CheckInOut();
+    public void updateInforCheckInOut(Long userId, boolean isCheckFirts) throws Exception {
+        CheckInOut checkInOutTemp;
         Date date = new Date();
-        if (isTheFistCheckInOut(userId) == true) {
+        if (isCheckFirts == true) {
+            CheckInOut checkInOut = new CheckInOut();
             checkInOut.setCheckInTime(date);
             checkInOut.setCreatAt(date);
             checkInOut.setUserId(userId);
+            checkInOutRepositoty.save(checkInOut);
         } else {
-            checkInOutTemp = checkInOutRepositoty.findByUserId(userId).get(0);
-            checkInOutTemp.setCheckOutTime(date);
-            checkInOutTemp.setUpdateAt(date);
-            checkInOutTemp.setUserId(userId);
-            checkInOutTemp.setTotal(Double.valueOf(1));
-        }
+            List<CheckInOut> list = checkInOutRepositoty.getCheckInOutOfDay(userId, date);
+            if (list != null && list.size() > 0) {
+                checkInOutTemp = list.get(0);
+                checkInOutTemp.setCheckOutTime(date);
+                checkInOutTemp.setUpdateAt(date);
+                if ((checkInOutTemp.getCheckOutTime().getTime() - checkInOutTemp.getCheckInTime().getTime()) >= 8 * 60 * 60 * 1000) {
+                    if (checkInOutTemp.getTotal() == 1D) {
+                        TransactionLog transactionLog = new TransactionLog();
+                        transactionLog.setCreatAt(date);
+                        transactionLog.setCoin(1L);
+                        transactionLog.setTransactionLog("Check in check out");
+                        transactionLog.setType(Constants.TransactionType.ADD_COIN.name());
+                        transactionLog.setUpdateAt(date);
+                        transactionLog.setUserReceiveId(userId);
 
-        transactionLog.setCreatAt(date);
-        transactionLog.setCoin(1L);
-        transactionLog.setTransactionLog("Check in check out");
-        transactionLog.setType("ADD_COIN");
-        transactionLog.setUpdateAt(date);
-        transactionLog.setUserReceiveId(userId);
+                        transactionLogRepository.save(transactionLog);
 
-        transactionLogRepository.save(transactionLog);
-        checkInOutRepositoty.save(checkInOutTemp);
-    }
-
-    @Override
-    public boolean isTheFistCheckInOut(Long userId) throws Exception {
-        List<CheckInOut> listUser = checkInOutRepositoty.findByUserIdOrderByCreatAt(userId);
-        if (listUser.size() == 0) {
-            return true;
-        } else {
-            CheckInOut checkInOut = listUser.get(0);
-            if (checkInOut.getCreatAt().compareTo(new Date()) == 0) {
-                if (checkInOut.getCheckInTime() == null) {
-                    return true;
-                } else {
-                    return false;
+                    }
+                    checkInOutTemp.setTotal(1D);
                 }
-            } else {
-                return false;
+                checkInOutRepositoty.save(checkInOutTemp);
             }
         }
     }
 
     @Override
-    public List<CheckInOut> getHistoryOfUser(Long userId){
+    public boolean isTheFistCheckInOut(Long userId) throws Exception {
+        Date date = new Date();
+        List<CheckInOut> listUser = checkInOutRepositoty.findAllByUserIdAndCreatAt(userId, date);
+        if (listUser.size() == 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public List<CheckInOut> getHistoryOfUser(Long userId) {
         List<CheckInOut> history = checkInOutRepositoty.findByUserId(userId);
         return history;
     }
