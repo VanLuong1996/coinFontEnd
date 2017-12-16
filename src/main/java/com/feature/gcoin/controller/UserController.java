@@ -87,7 +87,4 @@ public class UserController {
 //        informationUser.setNumberCoin(user.getAddress().toString());
         return informationUser;
     }
-
-//    @RequestMapping(value = "/update/{id}", method = POST)
-//    public ResponseEntity<Response> update
 }
