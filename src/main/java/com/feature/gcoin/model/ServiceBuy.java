@@ -1,5 +1,7 @@
 package com.feature.gcoin.model;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -23,9 +25,9 @@ public class ServiceBuy extends BaseEntity{
     @Column(name = "PRICE")
     private Long price; //5
 
-    private Date createAt; //6
+    private DateTime createAt; //6
 
-    private Date updateAt; //7
+    private DateTime updateAt; //7
 
     public ServiceBuy() {
     }
@@ -70,21 +72,21 @@ public class ServiceBuy extends BaseEntity{
         this.price = price;
     }
 
-    public Date getCreateAt() {
+    public DateTime getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(DateTime createAt) {
         this.createAt = createAt;
     }
 
     @Override
-    public Date getUpdateAt() {
+    public DateTime getUpdateAt() {
         return updateAt;
     }
 
     @Override
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(DateTime updateAt) {
         this.updateAt = updateAt;
     }
 }
