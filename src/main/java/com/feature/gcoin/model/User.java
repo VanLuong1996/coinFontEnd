@@ -156,6 +156,7 @@ public class User extends BaseEntity implements UserDetails {
         this.updateAt = updateAt;
     }
 
+
     @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
