@@ -72,7 +72,7 @@ public class ServicesController {
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 
-    @RequestMapping(method = GET, value = "/listOwnedServices}")
+    @RequestMapping(method = GET, value = "/listOwnedServices")
     public ResponseEntity<?> listOwnedServices(HttpServletRequest req) {
 
         String token = tokenHelper.getToken(req);
