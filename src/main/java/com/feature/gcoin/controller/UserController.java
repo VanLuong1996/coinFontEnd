@@ -91,11 +91,5 @@ public class UserController {
         return userDTO;
     }
 
-    @RequestMapping(value = "/getHistory", method = GET)
-    public void loadHistory(HttpServletRequest req) {
-        String token = tokenHelper.getToken(req);
-        String username = tokenHelper.getUsernameFromToken(token);
-        User user = userService.findByUsername(username);
-        checkInOutService.getHistoryOfUser(user.getId());
-    }
+
 }
