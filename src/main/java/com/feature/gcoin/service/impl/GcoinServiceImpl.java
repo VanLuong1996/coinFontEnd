@@ -1,53 +1,37 @@
 package com.feature.gcoin.service.impl;
 
-import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.service.GcoinService;
+import com.feature.gcoin.util.GcoinUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.math.BigInteger;
 
 public class GcoinServiceImpl implements GcoinService {
 
     //add coin to user
     @Override
-    public void addCoin(String address, String coin) {
+    public String addCoin(String address, BigInteger coin) throws Exception {
+        GcoinUtil.gcoin.addCoin(address, coin);
+        return GcoinUtil.gcoin.addCoin(address, coin).send().getBlockHash();
     }
 
     //tranfer coin from user sent to user receive
     @Override
-    public boolean transferCoin(String addressSent, String addressReceive, String coin) {
-        return false;
+    public String transferCoin(String addressSend, String addressReceive, BigInteger coin) throws Exception {
+        return GcoinUtil.gcoin.sendCoin(addressSend, addressReceive, coin).send().getBlockHash();
+
     }
 
     //get coins of user by address
     @Override
-    public Double getCoin(String address) {
-        return null;
+    public BigInteger getCoin(String address) throws Exception {
+        return new BigInteger(GcoinUtil.gcoin.getBalance(address).send().toString());
     }
 
     //minus coins of user by address
     @Override
-    public boolean subtractCoin(String address, String coin) {
+    public String subtractCoin(String address, BigInteger coin) throws Exception {
 
-        return false;
+        return GcoinUtil.gcoin.reduceCoin(address, coin).send().getBlockHash();
     }
 
-    //list best of staff and number vote
-    @Override
-    public List<UserDTO> bestStaffs(String address) {
-        List<UserDTO> lstDTO = new ArrayList<>();
-        return lstDTO;
-    }
-
-    // user vote user
-    @Override
-    public boolean bestStaffsVotes(String addressVoter, String addressCandidate) {
-        return false;
-    }
-
-    // choose best staff
-    @Override
-    public boolean addBestStaff(String address) {
-        return false;
-    }
 }
