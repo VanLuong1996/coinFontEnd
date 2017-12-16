@@ -4,6 +4,7 @@ import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.dto.reponse.Response;
+import com.feature.gcoin.dto.request.ServiceRequest;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
@@ -64,11 +65,11 @@ public class ServicesController {
     }
 
     @RequestMapping(method = POST, value = "/buy")
-    public ResponseEntity<?> buyServices(@RequestBody ServicesDTO servicesDTO, HttpServletRequest req) {
+    public ResponseEntity<?> buyServices(@RequestBody ServiceRequest serviceRequest, HttpServletRequest req) {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
-        servicesService.transactionByServices(user.getId(), servicesDTO);
+        servicesService.transactionByServices(user.getId(), serviceRequest);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 

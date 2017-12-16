@@ -8,6 +8,7 @@ import com.feature.gcoin.dto.VoteDTO;
 import com.feature.gcoin.dto.reponse.Response;
 import com.feature.gcoin.dto.request.UserRequest;
 import com.feature.gcoin.model.User;
+import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
 import com.feature.gcoin.service.UserService;
 import com.feature.gcoin.service.VoteService;
@@ -30,7 +31,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.POST;
 public class VoteController {
     @Autowired
     private VoteService voteService;
-
+    @Autowired
+    private TokenHelper tokenHelper;
     @Autowired
     private UserService userService;
 
@@ -48,8 +50,11 @@ public class VoteController {
     }
 
     @RequestMapping(method = POST, value = "/voteToStaff")
-    public ResponseEntity<?> voteToStaff(@RequestBody VoteDTO voteDTO) {
-        boolean res = voteService.voteToStaff(voteDTO);
+    public ResponseEntity<?> voteToStaff(@RequestBody String address, HttpServletRequest httpServletRequest) {
+        String token = tokenHelper.getToken(httpServletRequest);
+        String username = tokenHelper.getUsernameFromToken(token);
+        User user = userService.findByUsername(username);
+        boolean res = voteService.voteToStaff(user.getAddress(), address);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", res));
     }
 
