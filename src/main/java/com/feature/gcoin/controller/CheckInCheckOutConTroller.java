@@ -3,17 +3,17 @@ package com.feature.gcoin.controller;
 import com.feature.gcoin.common.DeviceProvider;
 import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.reponse.Response;
-import com.feature.gcoin.dto.request.CheckInOutRequest;
+import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.CheckInOutService;
-import org.joda.time.DateTime;
+import com.feature.gcoin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping(value = "/checkInOut")
@@ -29,15 +29,22 @@ public class CheckInCheckOutConTroller {
     @Autowired
     private CheckInOutService checkInOutService;
 
-    @RequestMapping(value = "/timekeeping", method = RequestMethod.POST) //post
-    public ResponseEntity<?> timekeeping(@RequestBody CheckInOutRequest checkInOutRequest) throws Exception {
-        boolean firstCheck = checkInOutService.isTheFistCheckInOut(checkInOutRequest.getUserId());
+    @Autowired
+    UserService userService;
+
+    @RequestMapping(value = "", method = RequestMethod.POST) //post
+    public ResponseEntity<?> timekeeping(HttpServletRequest req) throws Exception {
+
+        String token = tokenHelper.getToken(req);
+        String username = tokenHelper.getUsernameFromToken(token);
+        User user = userService.findByUsername(username);
+        boolean firstCheck = checkInOutService.isTheFistCheckInOut(user.getId());
         if (firstCheck) {
-            checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "In Successful", null));
+            checkInOutService.updateInforCheckInOut(user.getId());
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check In Successful", null));
         } else {
-            checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Out Successful", null));
+            checkInOutService.updateInforCheckInOut(user.getId());
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check Out Successful", null));
         }
     }
 }
