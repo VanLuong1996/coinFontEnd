@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public UserDTO getCoins(User user) {
         UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
         try {
-            userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
+//            userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
             userDTO.setNumberCoin(gcoinService.getCoin(userDTO.getAddress()));
             userDTO.setPriceCoin(BigInteger.valueOf(10000));
         } catch (Exception e) {

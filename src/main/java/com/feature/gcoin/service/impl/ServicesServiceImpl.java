@@ -1,13 +1,19 @@
 package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.common.constant.Const;
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.request.ServiceRequest;
 import com.feature.gcoin.model.ServiceBuy;
 import com.feature.gcoin.model.Services;
+import com.feature.gcoin.model.TransactionLog;
+import com.feature.gcoin.model.User;
 import com.feature.gcoin.repository.ServicesBuyRepository;
 import com.feature.gcoin.repository.ServicesRepository;
+import com.feature.gcoin.repository.TransactionLogRepository;
+import com.feature.gcoin.repository.UserRepository;
+import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.service.ServicesBuyService;
 import com.feature.gcoin.service.ServicesService;
 import org.slf4j.Logger;
@@ -31,7 +37,15 @@ public class ServicesServiceImpl implements ServicesService {
     private ServicesBuyRepository servicesBuyRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
+
+    @Autowired
     private ServicesBuyService servicesBuyService;
+    @Autowired
+    private GcoinService gcoinService;
 
     @Override
     public List<ServicesDTO> findAll() {
@@ -105,10 +119,13 @@ public class ServicesServiceImpl implements ServicesService {
     //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin mat di , luu transaction_log
     @Override
     public void transactionByServices(Long userId, ServiceRequest serviceRequest) {
-        try { //TODO -- get coins from smartcontact
+        try {
             //luong coin hien tai cua user
-            BigInteger userCoin;
-            userCoin = BigInteger.valueOf(10000000);
+            User user = userRepository.findById(userId);
+            gcoinService.addCoin(user.getAddress(), BigInteger.valueOf(1000000));
+
+            BigInteger userCoin = gcoinService.getCoin(user.getAddress());
+//            userCoin = BigInteger.valueOf(10000000);
             Services services = servicesRepository.findById(serviceRequest.getServiceId());
             if (services == null) {
                 throw new Exception("dich vu null");
@@ -121,9 +138,9 @@ public class ServicesServiceImpl implements ServicesService {
             if (userCoin.compareTo(totalCoinsOfService) < 0) {
                 throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");
             } else {
-                // TODO -- minus coins from smartcontract
-                userCoin = userCoin.subtract(totalCoinsOfService);
-                log.info("Coin hien tai cua user: " + userCoin);
+                log.info("Coin truoc khi mua cua user: " + gcoinService.getCoin(user.getAddress()));
+                String logSub = gcoinService.subtractCoin(user.getAddress(), totalCoinsOfService);
+                log.info("Coin sau khi mua cua user: " + gcoinService.getCoin(user.getAddress()));
                 ServiceBuy serviceBuy = new ServiceBuy();
                 serviceBuy.setServiceId(serviceRequest.getServiceId());
                 serviceBuy.setPrice(Const.exchangeRate.longValue());
@@ -132,6 +149,17 @@ public class ServicesServiceImpl implements ServicesService {
                 serviceBuy.setCreatAt(new Date());
 
                 servicesBuyService.saveServiceBuy(serviceBuy);
+
+                TransactionLog transaction = new TransactionLog();
+                transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+                transaction.setUserSendId(userId);
+                transaction.setUserReceiveId(null);
+                transaction.setCoin(totalCoinsOfService.longValue());
+                transaction.setServiceId(serviceRequest.getServiceId());
+                transaction.setTransactionLog(logSub);
+                transaction.setCreatAt(new Date());
+                transaction.setUpdateAt(new Date());
+                transactionLogRepository.save(transaction);
             }
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

@@ -5,18 +5,30 @@ import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.VoteDTO;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.repository.UserRepository;
+import com.feature.gcoin.service.GemVoteService;
 import com.feature.gcoin.service.VoteService;
+import com.feature.gcoin.smartcontract.GemVote;
+import com.feature.gcoin.util.GemVoteUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.web3j.crypto.CipherException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class VoteServiceImpl implements VoteService {
+    private final Logger logger = LoggerFactory.getLogger(VoteServiceImpl.class);
+
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private GemVoteService gemVoteService;
 
     //list best of staff and number vote
     @Override
@@ -27,30 +39,39 @@ public class VoteServiceImpl implements VoteService {
         return userDTO;
     }
 
-    // user vote user
-    @Override
-    public boolean bestStaffsVotes(String addressVoter, String addressCandidate) {
-        return false;
-    }
-
     // choose best staff
     @Override
-    public boolean addBestStaff(String address) {
+    public void addBestListStaff() throws Exception {
+        List<User> lst = userRepository.findByIsFeature();
+        for (User user: lst) {
+            gemVoteService.addCandidate(user.getAddress());
+        }
+        logger.info("Them nguoi ung cu");
+
+    }
+
+    @Override
+    public int getNumberOfVote(String address) throws Exception {
+        return gemVoteService.getVoteCountByAddress(address).intValue();
+    }
+
+    @Override
+    public boolean voteToStaff(String address, Long candidateId) throws Exception {
+
+        List<User> userVoters = userRepository.findByAddress(address);
+        userVoters.get(0);
+        User userCandidate = userRepository.findById(candidateId);
+
+        String log = gemVoteService.voteUser(userVoters.get(0).getAddress(), userCandidate.getAddress());
+        logger.info("hash of transection" + log);
         return true;
     }
 
     @Override
-    public int getNumberOfVote(String address) {
-        return 5;
-    }
-
-    @Override
-    public boolean voteToStaff(String address, Long candidateId) {
-        return true;
-    }
-
-    @Override
-    public boolean openSessionVote() {
+    public boolean openSessionVote() throws Exception {
+        GemVoteUtil.loadWeb3j();
+        GemVoteUtil.deloyGemVote();
+        addBestListStaff();
         return true;
     }
 

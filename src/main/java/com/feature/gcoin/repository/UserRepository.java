@@ -11,11 +11,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-    @Query("SELECT p FROM User p WHERE LOWER(p.password) = LOWER(:password) AND LOWER(p.username) = LOWER(:username)")
+    @Query("FROM User p WHERE LOWER(p.password) = LOWER(:password) AND LOWER(p.username) = LOWER(:username)")
     public List<User> login(@Param("username") String username, @Param("password") String password);
 
     User findByUsername(String userName);
 
     List<User> findByAddress(String address);
+
+    User findById(Long userId);
+
+    @Query("FROM User p WHERE isFeature = 1")
+    List<User> findByIsFeature();
 }
 

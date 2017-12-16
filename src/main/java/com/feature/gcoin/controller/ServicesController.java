@@ -9,6 +9,7 @@ import com.feature.gcoin.dto.request.ServiceRequest;
 import com.feature.gcoin.model.ServiceBuy;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
+import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.service.ServicesBuyService;
 import com.feature.gcoin.service.ServicesService;
 import com.feature.gcoin.service.UserService;
@@ -72,6 +73,7 @@ public class ServicesController {
 
     @RequestMapping(method = POST, value = "/buy")
     public ResponseEntity<?> buyServices(@RequestBody ServiceRequest serviceRequest, HttpServletRequest req) {
+
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);

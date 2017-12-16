@@ -43,6 +43,8 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "is_Feature")
+    private Long isFeature;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_Password_Reset_Date")
@@ -135,6 +137,13 @@ public class User extends BaseEntity implements UserDetails {
         this.phone = phone;
     }
 
+    public Long getIsFeature() {
+        return isFeature;
+    }
+
+    public void setIsFeature(Long isFeature) {
+        this.isFeature = isFeature;
+    }
 
     @JsonIgnore
     @Override

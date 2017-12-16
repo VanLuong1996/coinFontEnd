@@ -12,6 +12,7 @@ import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
 import com.feature.gcoin.service.UserService;
 import com.feature.gcoin.service.VoteService;
+import com.feature.gcoin.smartcontract.GemVote;
 import com.feature.gcoin.util.GemVoteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -41,7 +42,7 @@ public class VoteController {
     private UserService userService;
 
     @RequestMapping(method = GET, value = "/bestStaffs")
-    public ResponseEntity<?> bestStaffs() {
+    public ResponseEntity<?> bestStaffs() throws Exception {
         List<UserDTO> userDTOS = new ArrayList<>();
         List<User> lst = userService.findAll();
         for (User user : lst) {
@@ -54,7 +55,7 @@ public class VoteController {
     }
 
     @RequestMapping(method = POST, value = "/voteToStaff/{idUser}")
-    public ResponseEntity<?> voteToStaff(@PathVariable Long idUser, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> voteToStaff(@PathVariable Long idUser, HttpServletRequest httpServletRequest) throws Exception {
         String token = tokenHelper.getToken(httpServletRequest);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
@@ -76,8 +77,6 @@ public class VoteController {
 
     @RequestMapping(method = POST, value = "/openSessionVote")
     public ResponseEntity<?> openSessionVote() throws Exception {
-        GemVoteUtil.loadWeb3j();
-        GemVoteUtil.deloyGemVote();
         boolean response = voteService.openSessionVote();
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
