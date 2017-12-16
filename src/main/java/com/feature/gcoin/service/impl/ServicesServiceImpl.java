@@ -122,7 +122,13 @@ public class ServicesServiceImpl implements ServicesService {
     @Override
     public List<ServicesDTO> listOwnedServices(Long userId) {
         //TODO
-        return new ArrayList<>();
+//        List<ServicesDTO> servicesDTOS = new ArrayList<>();
+//        List<Services> services = servicesRepository.findAll();
+//        servicesDTOS = ModelMapperUtil.maps((List) services, ServicesDTO.class);
+        List<ServicesDTO> servicesDTOS = new ArrayList<>();
+        List<Services> services = servicesRepository.findAll();
+        servicesDTOS = ModelMapperUtil.maps((List) services, ServicesDTO.class);
+        return servicesDTOS;
     }
 
 }
