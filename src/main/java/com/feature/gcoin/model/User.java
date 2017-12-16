@@ -38,7 +38,10 @@ public class User extends BaseEntity implements UserDetails {
     private String address; //dia chi 6
 
     @Column(name = "type")
-    private String type; //loai 7
+    private String type; //loai
+
+    @Column(name = "phone")
+    private String phone;
 
     @Column(name = "creat_at")
     private DateTime creatAt;
@@ -125,6 +128,14 @@ public class User extends BaseEntity implements UserDetails {
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     @Override
     public DateTime getCreatAt() {
         return creatAt;
@@ -144,6 +155,7 @@ public class User extends BaseEntity implements UserDetails {
     public void setUpdateAt(DateTime updateAt) {
         this.updateAt = updateAt;
     }
+
 
     @JsonIgnore
     @Override

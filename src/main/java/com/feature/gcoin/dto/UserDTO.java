@@ -27,6 +27,8 @@ public class UserDTO extends BaseDTO{
 
     private Date lastPasswordResetDate;
 
+    private String phone;
+
     public UserDTO() {
     }
 
@@ -88,4 +90,11 @@ public class UserDTO extends BaseDTO{
         this.lastPasswordResetDate = lastPasswordResetDate;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

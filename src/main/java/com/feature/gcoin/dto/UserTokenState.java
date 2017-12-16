@@ -13,10 +13,15 @@ public class UserTokenState {
         this.userLoginResponse = null;
     }
 
-    public UserTokenState(UserLoginResponse userLoginResponse, String access_token, long expires_in) {
+    public UserTokenState(UserLoginResponse userLoginResponse, String access_token, Long expires_in) {
         this.access_token = access_token;
         this.expires_in = expires_in;
         this.userLoginResponse = userLoginResponse;
+    }
+
+    public UserTokenState(String refreshedToken, Long expiresIn) {
+        this.access_token = refreshedToken;
+        this.expires_in = expiresIn;
     }
 
     public String getAccess_token() {

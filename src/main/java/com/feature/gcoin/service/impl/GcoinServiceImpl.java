@@ -28,6 +28,7 @@ public class GcoinServiceImpl implements GcoinService {
     //minus coins of user by address
     @Override
     public boolean subtractCoin(String address, String coin) {
+
         return false;
     }
 
