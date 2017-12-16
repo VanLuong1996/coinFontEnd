@@ -1,17 +1,22 @@
 package com.feature.gcoin.dto;
 
+import com.feature.gcoin.dto.reponse.UserLoginResponse;
+
 public class UserTokenState {
     private String access_token;
     private Long expires_in;
+    private UserLoginResponse userLoginResponse;
 
     public UserTokenState() {
         this.access_token = null;
         this.expires_in = null;
+        this.userLoginResponse = null;
     }
 
-    public UserTokenState(String access_token, long expires_in) {
+    public UserTokenState(UserLoginResponse userLoginResponse, String access_token, long expires_in) {
         this.access_token = access_token;
         this.expires_in = expires_in;
+        this.userLoginResponse = userLoginResponse;
     }
 
     public String getAccess_token() {
@@ -28,5 +33,13 @@ public class UserTokenState {
 
     public void setExpires_in(Long expires_in) {
         this.expires_in = expires_in;
+    }
+
+    public UserLoginResponse getUserLoginResponse() {
+        return userLoginResponse;
+    }
+
+    public void setUserLoginResponse(UserLoginResponse userLoginResponse) {
+        this.userLoginResponse = userLoginResponse;
     }
 }

@@ -5,6 +5,7 @@ package com.feature.gcoin.common.util;
  * @CreatedDate Oct 4, 2017 2:43:55 PM
  */
 public interface Constants {
+	public static final Integer SUCCESS = 200;
 	public static final String DATE_TIME_PATTERN = "";
 	public static final Long AUTHENTICAION_MAX_TIMES_LOGIN_FAIL = 5l;
 	public static final int CAPTCHAR_TIMEOUT = 15;
