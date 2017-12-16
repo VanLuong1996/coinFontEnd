@@ -38,7 +38,10 @@ public class User extends BaseEntity implements UserDetails {
     private String address; //dia chi 6
 
     @Column(name = "type")
-    private String type; //loai 7
+    private String type; //loai
+
+    @Column(name = "phone")
+    private String phone;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_Password_Reset_Date")
@@ -142,6 +145,14 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @JsonIgnore

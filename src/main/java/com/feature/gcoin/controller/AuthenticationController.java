@@ -55,7 +55,7 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
-            LoginRequest loginRequest,
+            @RequestBody  LoginRequest loginRequest,
             HttpServletRequest request,
             HttpServletResponse response,
             Device device
@@ -75,7 +75,7 @@ public class AuthenticationController {
         // token creation
         UserLoginResponse userLoginResponse = authenticationService.authenticate(loginRequest, request);
         String jws = tokenHelper.generateToken(userLoginResponse.getUserName(), device);
-        int expiresIn = tokenHelper.getExpiredIn(device);
+        Long expiresIn = tokenHelper.getExpiredIn(device);
         // Return the token
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", new UserTokenState(userLoginResponse, jws, expiresIn)));
     }
@@ -83,26 +83,24 @@ public class AuthenticationController {
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
     public ResponseEntity<?> refreshAuthenticationToken(
             HttpServletRequest request,
-            HttpServletResponse response,
-            Principal principal
+            HttpServletResponse response
     ) {
 
-//        String authToken = tokenHelper.getToken( request );
-//
-//        Device device = deviceProvider.getCurrentDevice(request);
-//
-//        if (authToken != null && principal != null) {
-//
-//            // TODO check user password last update
-//            String refreshedToken = tokenHelper.refreshToken(authToken, device);
-//            int expiresIn = tokenHelper.getExpiredIn(device);
-//
-//            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
-//        } else {
-//            UserTokenState userTokenState = new UserTokenState();
-//            return ResponseEntity.accepted().body(userTokenState);
-//        }
-        return null;
+        String authToken = tokenHelper.getToken( request );
+
+        Device device = deviceProvider.getCurrentDevice(request);
+
+        if (authToken != null) {
+
+            // TODO check user password last update
+            String refreshedToken = tokenHelper.refreshToken(authToken, device);
+            Long expiresIn = tokenHelper.getExpiredIn(device);
+
+            return ResponseEntity.ok(new UserTokenState(refreshedToken, expiresIn));
+        } else {
+            UserTokenState userTokenState = new UserTokenState();
+            return ResponseEntity.accepted().body(userTokenState);
+        }
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
@@ -116,8 +114,18 @@ public class AuthenticationController {
         return ResponseEntity.accepted().body(response);
     }
 
+    @RequestMapping(value = "/sign-out", method = RequestMethod.POST)
+//    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Response> signOut(@RequestBody LoginRequest loginRequest) {
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "Successful");
+        Response response = new Response();
+        response.setResult(result);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null);
+    }
+
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<?> signUp(@RequestBody User user) {
         userDetailsService.signUp(user);
         Map<String, String> result = new HashMap<>();
