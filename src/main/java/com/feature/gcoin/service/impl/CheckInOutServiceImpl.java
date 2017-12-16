@@ -10,10 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 @Service
-public class CheckInOutServiceImpl implements CheckInOutService{
+public class CheckInOutServiceImpl implements CheckInOutService {
 
     @Autowired
     private CheckInOutRepositoty checkInOutRepositoty;
@@ -21,9 +22,18 @@ public class CheckInOutServiceImpl implements CheckInOutService{
     @Override
     public void updateInforCheckInOut(Long userId) {
         CheckInOut checkInOut = new CheckInOut();
-        if(isTheFistCheckInOut(userId)==true){
+        checkInOut.setUserId(userId);
+
+        if (isTheFistCheckInOut(userId) == true) {
             checkInOut.setCheckInTime(LocalDateTime.now().toDateTime());
-        }else {
+            checkInOut.setCreateAt(LocalDateTime.now().toDateTime());
+            checkInOut.setTotal((double) 0);
+        } else {
+            CheckInOut find = checkInOutRepositoty.findByUserId(userId);
+
+            checkInOut.setCreateAt(find.getCreatAt().toDateTime());
+            checkInOut.setCheckInTime(find.getCheckInTime().toDateTime());
+
             checkInOut.setCheckOutTime(LocalDateTime.now().toDateTime());
 
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -37,17 +47,19 @@ public class CheckInOutServiceImpl implements CheckInOutService{
 
             Long diff = d2.getTime() - d1.getTime(); // so gio lam viec
 
-//            if(diff >= 8) add coin
+            if (diff >= 8) checkInOut.setTotal(find.getTotal() + 0.5);
         }
         checkInOutRepositoty.save(checkInOut);
     }
 
     @Override
     public boolean isTheFistCheckInOut(Long userId) {
+
         DateTime createAt = LocalDateTime.now().toDateTime();
-        if(checkInOutRepositoty.findAllByUserIdAndCreateAt(userId, createAt).size() == 0){
+
+        if (checkInOutRepositoty.findAllByUserIdAndCreateAt(userId, createAt).size() == 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
