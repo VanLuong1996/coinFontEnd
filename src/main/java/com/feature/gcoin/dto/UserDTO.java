@@ -13,7 +13,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-public class UserDTO extends BaseDTO{
+public class UserDTO extends BaseDTO {
 
     private Long id; //id 1
 
@@ -30,6 +30,8 @@ public class UserDTO extends BaseDTO{
     private String phone;
 
     private String address;
+
+    private int numberVote;
 
     public UserDTO() {
     }
@@ -106,5 +108,13 @@ public class UserDTO extends BaseDTO{
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getNumberVote() {
+        return numberVote;
+    }
+
+    public void setNumberVote(int numberVote) {
+        this.numberVote = numberVote;
     }
 }

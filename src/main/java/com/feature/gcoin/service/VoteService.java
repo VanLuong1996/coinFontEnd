@@ -17,7 +17,7 @@ public interface VoteService {
     // choose best staff
     boolean addBestStaff(String address);
 
-    Long getNumberOfVote(String address);
+    int getNumberOfVote(String address);
 
     boolean voteToStaff(VoteDTO voteDTO);
 

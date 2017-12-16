@@ -40,8 +40,8 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public Long getNumberOfVote(String address) {
-        return 5L;
+    public int getNumberOfVote(String address) {
+        return 5;
     }
 
     @Override
