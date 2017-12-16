@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.web3j.crypto.CipherException;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -52,12 +53,12 @@ public class VoteController {
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", userDTOS));
     }
 
-    @RequestMapping(method = POST, value = "/voteToStaff")
-    public ResponseEntity<?> voteToStaff(@RequestBody String address, HttpServletRequest httpServletRequest) {
+    @RequestMapping(method = POST, value = "/voteToStaff/{idUser}")
+    public ResponseEntity<?> voteToStaff(@PathVariable Long idUser, HttpServletRequest httpServletRequest) {
         String token = tokenHelper.getToken(httpServletRequest);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
-        boolean res = voteService.voteToStaff(user.getAddress(), address);
+        boolean res = voteService.voteToStaff(user.getAddress(), idUser);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", res));
     }
 
