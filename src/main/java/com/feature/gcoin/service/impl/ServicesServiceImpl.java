@@ -94,7 +94,7 @@ public class ServicesServiceImpl implements ServicesService {
 
     //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin mat di , luu transaction_log
     @Override
-    public void transactionByServices(Long userId, List<ServicesDTO> lstServives) {
+    public void transactionByServices(Long userId, ServicesDTO servicesDTO) {
         try { //TODO -- get coins from smartcontact
             //luong coin hien tai cua user
             BigInteger userCoin;
@@ -103,9 +103,7 @@ public class ServicesServiceImpl implements ServicesService {
             //tong luong coin ung voi service
             BigInteger totalCoinsOfService;
             Long temp = null;
-            for (ServicesDTO services : lstServives) {
-                temp = +(Long) Long.valueOf(services.getPrice()) * services.getTotal() * Const.exchangeRate.longValue();
-            }
+            temp = +(Long) Long.valueOf(servicesDTO.getPrice()) * servicesDTO.getTotal() * Const.exchangeRate.longValue();
             totalCoinsOfService = BigInteger.valueOf(temp);
             if (userCoin.compareTo(totalCoinsOfService) < 0) {
                 throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");

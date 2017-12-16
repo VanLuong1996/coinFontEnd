@@ -4,6 +4,8 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.math.BigInteger;
 
+import com.feature.gcoin.common.util.ModelMapperUtil;
+import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.CheckInOutService;
@@ -76,19 +78,17 @@ public class UserController {
     }
 
     @RequestMapping(value = "/getCoins", method = GET)
-    public InformationUser getCoins(HttpServletRequest req) {
+    public UserDTO getCoins(HttpServletRequest req) {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
 
         InformationUser informationUser = new InformationUser();
         User user = userService.findByUsername(username);
-        informationUser.setEmail(user.getEmail());
-        informationUser.setAddress(user.getAddress());
-        informationUser.setName(user.getName());
-        informationUser.setUserName(user.getUsername());
-        informationUser.setNumberCoin(BigInteger.valueOf(10));
-        informationUser.setPriceCoin(BigInteger.valueOf(10000));
-        return informationUser;
+        UserDTO userDTO = ModelMapperUtil.map(user, UserDTO.class);
+        userDTO.setNumberVote(10000);
+        userDTO.setNumberCoin(BigInteger.valueOf(10));
+        userDTO.setPriceCoin(BigInteger.valueOf(10000));
+        return userDTO;
     }
 
     @RequestMapping(value = "/getHistory", method = GET)

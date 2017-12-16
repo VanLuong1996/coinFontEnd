@@ -64,11 +64,11 @@ public class ServicesController {
     }
 
     @RequestMapping(method = POST, value = "/buy")
-    public ResponseEntity<?> buyServices(@RequestBody List<ServicesDTO> servicesDTOs, HttpServletRequest req) {
+    public ResponseEntity<?> buyServices(@RequestBody ServicesDTO servicesDTO, HttpServletRequest req) {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
-        servicesService.transactionByServices(user.getId(), servicesDTOs);
+        servicesService.transactionByServices(user.getId(), servicesDTO);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 

@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean login(LoginRequest loginRequest) {
-        List<User> lst = userRepository.login(loginRequest.getUsername(), passwordEncoder.encode(loginRequest.getPassword()));
+        List<User> lst = userRepository.login(loginRequest.getUsername(), loginRequest.getPassword());
+//        List<User> lst = userRepository.login(loginRequest.getUsername(), passwordEncoder.encode(loginRequest.getPassword()));
         return lst != null & lst.size()>0 ? true : false;
     }
 
