@@ -88,7 +88,4 @@ public class UserController {
         informationUser.setPriceCoin(BigInteger.valueOf(10000));
         return informationUser;
     }
-
-//    @RequestMapping(value = "/update/{id}", method = POST)
-//    public ResponseEntity<Response> update
 }

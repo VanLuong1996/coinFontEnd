@@ -11,6 +11,7 @@ public class GcoinServiceImpl implements GcoinService {
     //add coin to user
     @Override
     public void addCoin(String address, String coin) {
+
     }
 
     //tranfer coin from user sent to user receive

@@ -136,8 +136,23 @@ public class AuthenticationController {
         }
     }
 
+    @RequestMapping(value = "/update", method = RequestMethod.PUT)
+    public ResponseEntity<Response> updateProfile(@RequestBody ProfileChange profileChange){
+        userDetailsService.updateProfile(profileChange.name, profileChange.phone);
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "Successful");
+        Response response = new Response();
+        response.setResult(result);
+        return ResponseEntity.accepted().body(response);
+    }
+
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
+    }
+
+    static class ProfileChange{
+        public String name;
+        public String phone;
     }
 }
