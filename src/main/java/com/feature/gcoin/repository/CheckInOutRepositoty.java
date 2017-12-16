@@ -10,9 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 public interface CheckInOutRepositoty extends JpaRepository<CheckInOut, Long> {
-
-    @Query("select c from check_in_out c where c.user_id = (:userId) and c.create_at = (:createAt)")
-    public List<CheckInOut> checkInOut(@Param("userId") Long userId, @Param("createAt") Date createAt);
+//
+//    @Query("select c from check_in_out c where c.user_id = (:userId) and c.create_at = (:createAt)")
+//    public List<CheckInOut> checkInOut(@Param("userId") Long userId, @Param("createAt") DateTime createAt);
 
     List<CheckInOut> findAllByUserIdAndCreateAt(Long userId, DateTime createAt);
 

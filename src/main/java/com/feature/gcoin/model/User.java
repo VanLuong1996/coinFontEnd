@@ -40,6 +40,12 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "type")
     private String type; //loai 7
 
+    @Column(name = "creat_at")
+    private DateTime creatAt;
+
+    @Column(name = "update_at")
+    private DateTime updateAt;
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_Password_Reset_Date")
     private Date lastPasswordResetDate;
@@ -117,6 +123,26 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setLastPasswordResetDate(Date lastPasswordResetDate) {
         this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    @Override
+    public DateTime getCreatAt() {
+        return creatAt;
+    }
+
+    @Override
+    public void setCreatAt(DateTime creatAt) {
+        this.creatAt = creatAt;
+    }
+
+    @Override
+    public DateTime getUpdateAt() {
+        return updateAt;
+    }
+
+    @Override
+    public void setUpdateAt(DateTime updateAt) {
+        this.updateAt = updateAt;
     }
 
     @JsonIgnore
