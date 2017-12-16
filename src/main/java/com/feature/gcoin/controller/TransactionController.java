@@ -5,6 +5,7 @@ import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.TransactionLogDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.dto.reponse.Response;
+import com.feature.gcoin.dto.reponse.TransactionLogReponse;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
@@ -42,7 +43,7 @@ public class TransactionController {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
-        List<TransactionLogDTO> lst = transactionLogService.search(user.getId());
-        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", lst));
+        TransactionLogReponse transactionLogReponse = transactionLogService.search(user.getId());
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", transactionLogReponse));
     }
 }
