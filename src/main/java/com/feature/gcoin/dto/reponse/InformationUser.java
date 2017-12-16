@@ -1,10 +1,12 @@
 package com.feature.gcoin.dto.reponse;
 
+import java.math.BigInteger;
+
 public class InformationUser {
     String userName; //ten dang nhap
     String email;//mail
     String name; //name
-    Double numberCoin; // address
+    BigInteger numberCoin; // address
 
     public String getUserName() {
         return userName;
@@ -30,11 +32,11 @@ public class InformationUser {
         this.name = name;
     }
 
-    public Double getNumberCoin() {
+    public BigInteger getNumberCoin() {
         return numberCoin;
     }
 
-    public void setNumberCoin(Double numberCoin) {
+    public void setNumberCoin(BigInteger numberCoin) {
         this.numberCoin = numberCoin;
     }
 }

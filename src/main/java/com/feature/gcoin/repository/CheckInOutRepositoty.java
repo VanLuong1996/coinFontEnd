@@ -18,5 +18,7 @@ public interface CheckInOutRepositoty extends JpaRepository<CheckInOut, Long> {
 
     List<CheckInOut> findByUserIdOrderByCreatAt(Long userId);
 
+    CheckInOut findByUserId (Long userId);
+
     CheckInOut save(CheckInOut checkInOut);
 }

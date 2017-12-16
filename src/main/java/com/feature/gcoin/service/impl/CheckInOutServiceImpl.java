@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class CheckInOutServiceImpl implements CheckInOutService {
+public class CheckInOutServiceImpl implements CheckInOutService{
 
     @Autowired
     private CheckInOutRepositoty checkInOutRepositoty;

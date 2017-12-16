@@ -102,6 +102,10 @@ public class User extends BaseEntity implements UserDetails {
         this.authorities = authorities;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.authorities;
