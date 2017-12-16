@@ -94,31 +94,6 @@ public class User extends BaseEntity implements UserDetails {
         this.type = type;
     }
 
-    @Override
-    public Date getCreatAt() {
-        return creatAt;
-    }
-
-    @Override
-    public void setCreatAt(Date creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    @Override
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
-
-    public void setPassword(String password) {
-        Timestamp now = new Timestamp(DateTime.now().getMillis());
-        this.password = password;
-    }
-
     public void setAuthorities(List<Authority> authorities) {
         this.authorities = authorities;
     }

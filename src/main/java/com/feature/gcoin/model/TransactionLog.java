@@ -1,5 +1,7 @@
 package com.feature.gcoin.model;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -30,9 +32,9 @@ public class TransactionLog extends BaseEntity{
     @Column(name = "TRANSACTION_LOG")
     private String transactionLog; //7
 
-    private Date createAt; //8
+    private DateTime createAt; //8
 
-    private Date updateAt; //9
+    private DateTime updateAt; //9
 
     public TransactionLog() {
     }
@@ -93,21 +95,21 @@ public class TransactionLog extends BaseEntity{
         this.transactionLog = transactionLog;
     }
 
-    public Date getCreateAt() {
+    public DateTime getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(DateTime createAt) {
         this.createAt = createAt;
     }
 
     @Override
-    public Date getUpdateAt() {
+    public DateTime getUpdateAt() {
         return updateAt;
     }
 
     @Override
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(DateTime updateAt) {
         this.updateAt = updateAt;
     }
 }
