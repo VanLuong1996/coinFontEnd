@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.feature.gcoin.common.exception.BusinessException;
+import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.reponse.UserLoginResponse;
 import com.feature.gcoin.dto.request.LoginRequest;
 import com.feature.gcoin.dto.UserTokenState;
@@ -76,7 +77,7 @@ public class AuthenticationController {
         String jws = tokenHelper.generateToken(userLoginResponse.getUserName(), device);
         int expiresIn = tokenHelper.getExpiredIn(device);
         // Return the token
-        return ResponseEntity.ok(new UserTokenState(jws, expiresIn));
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", new UserTokenState(userLoginResponse, jws, expiresIn)));
     }
 
     @RequestMapping(value = "/refresh", method = RequestMethod.POST)
@@ -109,7 +110,7 @@ public class AuthenticationController {
     public ResponseEntity<Response> changePassword(@RequestBody PasswordChanger passwordChanger) {
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         Map<String, String> result = new HashMap<>();
-        result.put("result", "success");
+        result.put("result", "Successful");
         Response response = new Response();
         response.setResult(result);
         return ResponseEntity.accepted().body(response);
@@ -120,7 +121,7 @@ public class AuthenticationController {
     public ResponseEntity<?> signUp(@RequestBody User user) {
         userDetailsService.signUp(user);
         Map<String, String> result = new HashMap<>();
-        result.put("result", "success");
+        result.put("result", "Successful");
         return ResponseEntity.accepted().body(result);
     }
 
