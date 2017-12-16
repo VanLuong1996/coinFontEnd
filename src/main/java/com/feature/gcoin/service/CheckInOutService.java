@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CheckInOutService {
 
-    void updateInforCheckInOut(Long userId) throws Exception;
+    void updateInforCheckInOut(Long userId, boolean isCheck) throws Exception;
 
     boolean isTheFistCheckInOut(Long userId) throws Exception;
 

@@ -1,13 +1,17 @@
 package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.common.TimeProvider;
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.common.constant.Const;
 import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.model.CheckInOut;
+import com.feature.gcoin.model.TransactionLog;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.repository.CheckInOutRepositoty;
+import com.feature.gcoin.repository.TransactionLogRepository;
 import com.feature.gcoin.repository.UserRepository;
 import com.feature.gcoin.service.CheckInOutService;
+import com.feature.gcoin.service.TransactionLogService;
 import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.service.UserService;
 import org.joda.time.DateTime;
@@ -27,7 +31,6 @@ import java.util.List;
 
 @Service
 public class CheckInOutServiceImpl implements CheckInOutService {
-    private final Logger log = LoggerFactory.getLogger(CheckInOutServiceImpl.class);
 
     @Autowired
     private CheckInOutRepositoty checkInOutRepositoty;
@@ -42,44 +45,53 @@ public class CheckInOutServiceImpl implements CheckInOutService {
     @Autowired
     private GcoinService gcoinService;
 
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
+
     @Override
-    public void updateInforCheckInOut(Long userId) throws Exception {
-        CheckInOut checkInOut = new CheckInOut();
-//        DateTime timestamp = new org.joda.time.DateTime();
+    public void updateInforCheckInOut(Long userId, boolean isCheckFirts) throws Exception {
+        CheckInOut checkInOutTemp;
         Date date = new Date();
-        if (isTheFistCheckInOut(userId) == true) {
+        if (isCheckFirts == true) {
+            CheckInOut checkInOut = new CheckInOut();
             checkInOut.setCheckInTime(date);
             checkInOut.setCreatAt(date);
             checkInOut.setUserId(userId);
+            checkInOutRepositoty.save(checkInOut);
         } else {
-            checkInOut.setCheckOutTime(date);
-            checkInOut.setUpdateAt(date);
-            checkInOut.setUserId(userId);
-            //them 1 coin
-            User user = userRepository.findById(userId);
-            BigInteger userCoin = gcoinService.getCoin(user.getAddress());
-            gcoinService.addCoin(user.getAddress(), Const.bonusCoinAttendance);
-            log.info("Current sau diem danh: " + gcoinService.getCoin(user.getAddress()));
+            List<CheckInOut> list = checkInOutRepositoty.getCheckInOutOfDay(userId, date);
+            if (list != null && list.size() > 0) {
+                checkInOutTemp = list.get(0);
+                checkInOutTemp.setCheckOutTime(date);
+                checkInOutTemp.setUpdateAt(date);
+                if ((checkInOutTemp.getCheckOutTime().getTime() - checkInOutTemp.getCheckInTime().getTime()) >= 8 * 60 * 60 * 1000) {
+                    if (checkInOutTemp.getTotal() == 1D) {
+                        TransactionLog transactionLog = new TransactionLog();
+                        transactionLog.setCreatAt(date);
+                        transactionLog.setCoin(1L);
+                        transactionLog.setTransactionLog("Check in check out");
+                        transactionLog.setType(Constants.TransactionType.ADD_COIN.name());
+                        transactionLog.setUpdateAt(date);
+                        transactionLog.setUserReceiveId(userId);
+
+                        transactionLogRepository.save(transactionLog);
+
+                    }
+                    checkInOutTemp.setTotal(1D);
+                }
+                checkInOutRepositoty.save(checkInOutTemp);
+            }
         }
-        checkInOutRepositoty.save(checkInOut);
     }
 
     @Override
     public boolean isTheFistCheckInOut(Long userId) throws Exception {
-        List<CheckInOut> listUser = checkInOutRepositoty.findByUserIdOrderByCreatAt(userId);
+        Date date = new Date();
+        List<CheckInOut> listUser = checkInOutRepositoty.findAllByUserIdAndCreatAt(userId, date);
         if (listUser.size() == 0) {
             return true;
         } else {
-            CheckInOut checkInOut = listUser.get(0);
-            if (checkInOut.getCreatAt().compareTo(new Date()) == 0) {
-                if (checkInOut.getCheckInTime() == null) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
+            return false;
         }
     }
 
