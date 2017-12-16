@@ -4,7 +4,7 @@ public class InformationUser {
     String userName; //ten dang nhap
     String email;//mail
     String name; //name
-    int numberCoin; // address
+    Double numberCoin; // address
 
     public String getUserName() {
         return userName;
@@ -30,11 +30,11 @@ public class InformationUser {
         this.name = name;
     }
 
-    public int getNumberCoin() {
+    public Double getNumberCoin() {
         return numberCoin;
     }
 
-    public void setNumberCoin(int numberCoin) {
+    public void setNumberCoin(Double numberCoin) {
         this.numberCoin = numberCoin;
     }
 }

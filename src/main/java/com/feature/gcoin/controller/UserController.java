@@ -38,14 +38,14 @@ public class UserController {
         return this.userService.findAll();
     }
 
-    @RequestMapping(value = "/infor/{Id}", method = GET)
-    public InformationUser loadInforById( @PathVariable Long userId ) {
+    @RequestMapping(value = "/infor/{id}", method = GET)
+    public InformationUser loadInformationUser( @PathVariable Long id ) {
         InformationUser informationUser = new InformationUser();
-        User user = userService.findById( userId );
+        User user = userService.findById( id );
         informationUser.setEmail(user.getEmail());
         informationUser.setName(user.getName());
         informationUser.setUserName(user.getUsername());
-//        informationUser.setNumberCoin(gcoinService.getCoin(user.getAddress()));
+//        informationUser.setNumberCoin(user.getAddress().toString());
 
         return informationUser;
     }
