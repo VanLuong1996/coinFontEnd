@@ -85,4 +85,24 @@ public class ServicesServiceImpl implements ServicesService {
         }
         return resDTO;
     }
+
+    //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin , luu transaction_log
+
+    @Override
+    public boolean transactionByServices(List<Long> lstServivesId, Long userId, String price, String quantiy) {
+        //TODO -- get coins from smartcontact
+        //luong coin hien tai cua user
+        double userCoin = 0;
+        userCoin = 100.0d;
+
+        //tong luong coin ung voi service
+        double totalCoinsOfService = 0;
+        List<Services> lstService = new ArrayList<>();
+        for (Long itemServiceId : lstServivesId) {
+            Services servicesDTO = servicesRepository.findById(itemServiceId);
+//            servicesDTO.
+        }
+
+        return false;
+    }
 }
