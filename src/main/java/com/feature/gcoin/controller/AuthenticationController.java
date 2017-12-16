@@ -121,7 +121,7 @@ public class AuthenticationController {
         result.put("result", "Successful");
         Response response = new Response();
         response.setResult(result);
-        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)

@@ -34,10 +34,10 @@ public class CheckInCheckOutConTroller {
         Boolean firstCheck = checkInOutService.isTheFistCheckInOut(checkInOutRequest.getUserId());
         if(firstCheck == true) {
             checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "In Successful", null));
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check In Successful", null));
         }else {
             checkInOutService.updateInforCheckInOut(checkInOutRequest.getUserId());
-            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Out Successful", null));
+            return ResponseEntity.ok(new Response(Constants.SUCCESS, "Check Out Successful", null));
         }
     }
 }
