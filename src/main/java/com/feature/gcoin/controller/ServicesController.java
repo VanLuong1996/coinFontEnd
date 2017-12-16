@@ -2,8 +2,12 @@ package com.feature.gcoin.controller;
 
 import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.ServicesDTO;
+import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.dto.reponse.Response;
+import com.feature.gcoin.model.User;
+import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.ServicesService;
+import com.feature.gcoin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -23,6 +28,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class ServicesController {
     @Autowired
     private ServicesService servicesService;
+    @Autowired
+    private TokenHelper tokenHelper;
+    @Autowired
+    UserService userService;
 
     @RequestMapping(method = GET, value = "/list")
     public ResponseEntity<?> findAllServices() {
@@ -36,7 +45,7 @@ public class ServicesController {
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
 
-    @RequestMapping(method = GET, value = "/get/{id}")
+    @RequestMapping(method = GET, value = "/{id}")
     public ResponseEntity<?> findServicesById(@PathVariable Long id) {
         ServicesDTO responseDTO = servicesService.findById(id);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", responseDTO));
@@ -47,9 +56,31 @@ public class ServicesController {
         boolean response = servicesService.deleteById(servicesDTO);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
-    @RequestMapping(method = PUT, value = "/update/{id}")
-    public ResponseEntity<?> updateServices(@PathVariable Long id,@RequestBody ServicesDTO servicesDTO) {
-        ServicesDTO response = servicesService.updateServices(id,servicesDTO);
+
+    @RequestMapping(method = PUT, value = "/{id}")
+    public ResponseEntity<?> updateServices(@PathVariable Long id, @RequestBody ServicesDTO servicesDTO) {
+        ServicesDTO response = servicesService.updateServices(id, servicesDTO);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", response));
     }
+
+    @RequestMapping(method = POST, value = "/buy")
+    public ResponseEntity<?> buyServices(@RequestBody List<ServicesDTO> servicesDTOs, HttpServletRequest req) {
+        String token = tokenHelper.getToken(req);
+        String username = tokenHelper.getUsernameFromToken(token);
+        User user = userService.findByUsername(username);
+        servicesService.transactionByServices(user.getId(), servicesDTOs);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
+    }
+
+    @RequestMapping(method = GET, value = "/listOwnedServices}")
+    public ResponseEntity<?> listOwnedServices(HttpServletRequest req) {
+
+        String token = tokenHelper.getToken(req);
+        String username = tokenHelper.getUsernameFromToken(token);
+        User user = userService.findByUsername(username);
+        List<ServicesDTO> responseDTO = servicesService.listOwnedServices(user.getId());
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", responseDTO));
+    }
+
+
 }

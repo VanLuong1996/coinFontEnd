@@ -1,10 +1,14 @@
 package com.feature.gcoin.model;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.util.Date;
 
+@MappedSuperclass
 public class BaseEntity {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREAT_AT")

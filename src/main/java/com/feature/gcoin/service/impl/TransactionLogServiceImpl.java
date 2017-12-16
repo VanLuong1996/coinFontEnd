@@ -17,15 +17,15 @@ public class TransactionLogServiceImpl implements TransactionLogService {
 	private TransactionLogRepository transactionLogRepository;
 	
 	@Override
-	public TransactionLog insert(UserRequest req, String type) {
+	public TransactionLog insert(Long userSendId, UserRequest req, String type) {
 		TransactionLog transaction = new TransactionLog(); 
 		transaction.setType(type);
-		transaction.setUserSendId(req.getUserSendId());
+		transaction.setUserSendId(userSendId);
 		transaction.setUserReceiveId(req.getUserReceiveId());
 		transaction.setCoin(req.getTotalCoin());
 		transaction.setServiceId(0L);
 		transaction.setTransactionLog(type);
-		transaction.setCreateAt(new Date());
+		transaction.setCreatAt(new Date());
 		transaction.setUpdateAt(new Date());
 		
 		return transactionLogRepository.save(transaction);

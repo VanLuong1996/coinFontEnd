@@ -43,6 +43,7 @@ public class User extends BaseEntity implements UserDetails {
     @Column(name = "phone")
     private String phone;
 
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "last_Password_Reset_Date")
     private Date lastPasswordResetDate;
@@ -97,33 +98,12 @@ public class User extends BaseEntity implements UserDetails {
         this.type = type;
     }
 
-    @Override
-    public Date getCreatAt() {
-        return creatAt;
-    }
-
-    @Override
-    public void setCreatAt(Date creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    @Override
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+    public void setAuthorities(List<Authority> authorities) {
+        this.authorities = authorities;
     }
 
     public void setPassword(String password) {
-        Timestamp now = new Timestamp(DateTime.now().getMillis());
         this.password = password;
-    }
-
-    public void setAuthorities(List<Authority> authorities) {
-        this.authorities = authorities;
     }
 
     @Override
@@ -154,6 +134,7 @@ public class User extends BaseEntity implements UserDetails {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
 
     @JsonIgnore
     @Override

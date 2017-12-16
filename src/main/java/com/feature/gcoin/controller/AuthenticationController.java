@@ -21,7 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -64,12 +67,12 @@ public class AuthenticationController {
         // Perform the security
 //        final Authentication authentication = authenticationManager.authenticate(
 //                new UsernamePasswordAuthenticationToken(
-//                        authenticationRequest.getUsername(),
-//                        authenticationRequest.getPassword()
+//                        loginRequest.getUsername(),
+//                        loginRequest.getPassword()
 //                )
 //        );
-
-        // Inject into security context
+//
+////         Inject into security context
 //        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // token creation
@@ -104,7 +107,6 @@ public class AuthenticationController {
     }
 
     @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Response> changePassword(@RequestBody PasswordChanger passwordChanger) {
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
         Map<String, String> result = new HashMap<>();
@@ -121,7 +123,7 @@ public class AuthenticationController {
         result.put("result", "Successful");
         Response response = new Response();
         response.setResult(result);
-        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null);
+        return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 
     @RequestMapping(value = "/sign-up", method = RequestMethod.POST)

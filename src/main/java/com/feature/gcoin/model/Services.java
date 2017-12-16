@@ -23,10 +23,6 @@ public class Services extends BaseEntity {
     @Column(name = "TOTAL")
     private Long total; //4
 
-    private Date creatAt; //5
-
-    private Date updateAt; //6
-
     public Services() {
     }
 
@@ -62,23 +58,4 @@ public class Services extends BaseEntity {
         this.total = total;
     }
 
-    @Override
-    public Date getCreatAt() {
-        return creatAt;
-    }
-
-    @Override
-    public void setCreatAt(Date creatAt) {
-        this.creatAt = creatAt;
-    }
-
-    @Override
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    @Override
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
-    }
 }
