@@ -98,12 +98,15 @@ public class ServicesServiceImpl implements ServicesService {
         try { //TODO -- get coins from smartcontact
             //luong coin hien tai cua user
             BigInteger userCoin;
-            userCoin = BigInteger.valueOf(1000);
-
+            userCoin = BigInteger.valueOf(10000000);
+            Services services = servicesRepository.findById(servicesDTO.getId());
+            if (services == null) {
+                throw new Exception("dich vu null");
+            }
             //tong luong coin ung voi service
             BigInteger totalCoinsOfService;
             Long temp = null;
-            temp = +(Long) Long.valueOf(servicesDTO.getPrice()) * servicesDTO.getTotal() * Const.exchangeRate.longValue();
+            temp = (Long) services.getPrice() * servicesDTO.getTotal() * Const.exchangeRate.longValue();
             totalCoinsOfService = BigInteger.valueOf(temp);
             if (userCoin.compareTo(totalCoinsOfService) < 0) {
                 throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");
