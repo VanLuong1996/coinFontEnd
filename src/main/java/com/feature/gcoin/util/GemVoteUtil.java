@@ -21,7 +21,7 @@ public class GemVoteUtil {
 
     public static void loadWeb3j() throws IOException, CipherException {
         web3j = Web3j.build(new HttpService());
-        credentials = Credentials.create("3988dc117e5f3bdb4a7ce82f2b837e29e3a3f3b28c910df67b361116f316d578");
+        credentials = Credentials.create("6408911e29801924fee91ab88ed47260f687d666b36681959d8b48969c1186d5");
     }
 
     //chi deploy 1 lan

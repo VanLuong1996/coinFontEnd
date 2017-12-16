@@ -10,6 +10,8 @@ import com.feature.gcoin.dto.UserDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.security.TokenHelper;
 import com.feature.gcoin.service.CheckInOutService;
+import com.feature.gcoin.service.GcoinService;
+import com.feature.gcoin.util.GcoinUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,6 +48,8 @@ public class UserController {
 
     @Autowired
     private CheckInOutService checkInOutService;
+    @Autowired
+    private GcoinService gcoinService;
 
 //    @Autowired
 //    private GcoinService gcoinService;
@@ -55,6 +59,21 @@ public class UserController {
         String token = tokenHelper.getToken(req);
         String username = tokenHelper.getUsernameFromToken(token);
         return userService.findByUsername(username);
+    }
+
+    @RequestMapping(method = GET, value = "/createMoney")
+    public String createCoin() throws Exception {
+        GcoinUtil.loadWeb3j();
+        GcoinUtil.deloyGcoin();
+
+        gcoinService.addCoin("0x692a70d2e424a56d2c6c27aa97d1a86395877b3a", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0xbbf289d846208c16edc8474705c748aff07732db", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0x0dcd2f752394c41875e259e00bb44fd505297caf", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0x08970fed061e7747cd9a38d680a601510cb659fb", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0xdc04977a2078c8ffdf086d618d1f961b6c546222", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0xef55bfac4228981e850936aaf042951f7b146e41", BigInteger.valueOf(1000));
+        gcoinService.addCoin("0x8c1ed7e19abaa9f23c476da86dc1577f1ef401f5", BigInteger.valueOf(1000));
+        return "coin";
     }
 
 //    @RequestMapping(method = GET, value = "/all")
@@ -87,7 +106,7 @@ public class UserController {
 
         User user = userService.findByUsername(username);
 
-        return userService.getCoins(user) ;
+        return userService.getCoins(user);
     }
 
 

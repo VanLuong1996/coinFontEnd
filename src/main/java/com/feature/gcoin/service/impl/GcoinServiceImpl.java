@@ -12,7 +12,6 @@ public class GcoinServiceImpl implements GcoinService {
     //add coin to user
     @Override
     public String addCoin(String address, BigInteger coin) throws Exception {
-        GcoinUtil.gcoin.addCoin(address, coin);
         return GcoinUtil.gcoin.addCoin(address, coin).send().getBlockHash();
     }
 

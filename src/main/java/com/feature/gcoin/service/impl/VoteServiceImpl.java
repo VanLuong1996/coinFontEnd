@@ -75,7 +75,7 @@ public class VoteServiceImpl implements VoteService {
             String log = gemVoteService.voteUser(userVoters.get(0).getAddress(), userCandidate.getAddress());
             //log
             TransactionLog transaction = new TransactionLog();
-            transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+            transaction.setType(Constants.TransactionType.VOTE.name());
             transaction.setUserSendId(userVoters.get(0).getId());
             transaction.setUserReceiveId(userCandidate.getId());
             transaction.setCoin(null);

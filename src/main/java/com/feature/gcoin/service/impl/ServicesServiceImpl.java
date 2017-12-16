@@ -1,14 +1,17 @@
 package com.feature.gcoin.service.impl;
 
 import com.feature.gcoin.common.constant.Const;
+import com.feature.gcoin.common.constant.Constants;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.request.ServiceRequest;
 import com.feature.gcoin.model.ServiceBuy;
 import com.feature.gcoin.model.Services;
+import com.feature.gcoin.model.TransactionLog;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.repository.ServicesBuyRepository;
 import com.feature.gcoin.repository.ServicesRepository;
+import com.feature.gcoin.repository.TransactionLogRepository;
 import com.feature.gcoin.repository.UserRepository;
 import com.feature.gcoin.service.GcoinService;
 import com.feature.gcoin.service.ServicesBuyService;
@@ -40,6 +43,8 @@ public class ServicesServiceImpl implements ServicesService {
     private ServicesBuyService servicesBuyService;
     @Autowired
     private GcoinService gcoinService;
+    @Autowired
+    private TransactionLogRepository transactionLogRepository;
 
     @Override
     public List<ServicesDTO> findAll() {
@@ -124,13 +129,13 @@ public class ServicesServiceImpl implements ServicesService {
             //tong luong coin ung voi service
             BigInteger totalCoinsOfService;
             Long temp = null;
-            temp = (Long) services.getPrice() * serviceRequest.getTotal() * Const.exchangeRate.longValue();
+            temp = (Long) services.getPrice() * serviceRequest.getTotal() / Const.exchangeRate.longValue();
             totalCoinsOfService = BigInteger.valueOf(temp);
             if (userCoin.compareTo(totalCoinsOfService) < 0) {
                 throw new Exception("Tai khoan cua user khong du de thuc hien giao dich");
             } else {
                 log.info("Coin truoc khi mua cua user: " + gcoinService.getCoin(user.getAddress()));
-                gcoinService.subtractCoin(user.getAddress(), totalCoinsOfService);
+                String alog = gcoinService.subtractCoin(user.getAddress(), totalCoinsOfService);
                 log.info("Coin sau khi mua cua user: " + gcoinService.getCoin(user.getAddress()));
                 ServiceBuy serviceBuy = new ServiceBuy();
                 serviceBuy.setServiceId(serviceRequest.getServiceId());
@@ -140,6 +145,17 @@ public class ServicesServiceImpl implements ServicesService {
                 serviceBuy.setCreatAt(new Date());
 
                 servicesBuyService.saveServiceBuy(serviceBuy);
+
+                TransactionLog transaction2 = new TransactionLog();
+                transaction2.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
+                transaction2.setUserSendId(userId);
+                transaction2.setUserReceiveId(null);
+                transaction2.setCoin(totalCoinsOfService.longValue());
+                transaction2.setServiceId(serviceRequest.getServiceId());
+                transaction2.setTransactionLog(alog);
+                transaction2.setCreatAt(new Date());
+                transaction2.setUpdateAt(new Date());
+                transactionLogRepository.save(transaction2);
             }
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);

@@ -59,7 +59,7 @@ public class TransactionLogServiceImpl implements TransactionLogService {
             TransactionLog transaction = new TransactionLog();
             transaction.setType(Constants.TransactionType.SUBTRACTION_COIN.name());
             transaction.setUserSendId(userSendId);
-            transaction.setUserReceiveId(userReceive.getId());
+            transaction.setUserReceiveId(null);
             transaction.setCoin(req.getTotalCoin());
             transaction.setServiceId(null);
             transaction.setTransactionLog(log);
@@ -69,8 +69,8 @@ public class TransactionLogServiceImpl implements TransactionLogService {
 
             TransactionLog transaction2 = new TransactionLog();
             transaction2.setType(Constants.TransactionType.ADD_COIN.name());
-            transaction2.setUserSendId(userReceive.getId());
-            transaction2.setUserReceiveId(userSendId);
+            transaction2.setUserSendId(null);
+            transaction2.setUserReceiveId(userReceive.getId());
             transaction2.setCoin(req.getTotalCoin());
             transaction2.setServiceId(null);
             transaction2.setTransactionLog(log);

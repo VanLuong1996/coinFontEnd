@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TransactionLogRepository extends JpaRepository<TransactionLog, Long> {
-    @Query("select c from TransactionLog c where c.userSendId = (:userSendId) or c.userReceiveId = (:userReceiveId)")
+    @Query("select c from TransactionLog c where (c.userSendId = (:userSendId) and type ='SUBTRACTION_COIN') or (c.userReceiveId = (:userReceiveId) and type ='ADD_COIN') or (c.userSendId = (:userSendId) and type ='VOTE')")
     List<TransactionLog> search(@Param("userSendId") Long userSendId, @Param("userReceiveId") Long userReceiveId);
 
     TransactionLog findByUserSendIdOrUserReceiveId(Long userSendId, Long userReceiveId);

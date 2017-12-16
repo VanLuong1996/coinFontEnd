@@ -38,8 +38,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private UserService userService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private GcoinService gcoinService;
+
     @Autowired
     private GemVoteService gemVoteService;
 
@@ -64,12 +63,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             response.setUserName(userName);
             UserDTO userDTO = ModelMapperUtil.map(userEntity, UserDTO.class);
             userDTO.setPriceCoin(BigInteger.valueOf(10000));
-            try {
-                userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
-                userDTO.setNumberCoin(gcoinService.getCoin(userDTO.getAddress()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             response.setUserDTO(userDTO);
             return response;
         }
