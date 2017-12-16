@@ -3,15 +3,14 @@ package com.feature.gcoin.controller;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 import java.math.BigInteger;
-import java.util.List;
 
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.security.TokenHelper;
+import com.feature.gcoin.service.CheckInOutService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 //import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -41,6 +40,9 @@ public class UserController {
 
     @Autowired
     private TokenHelper tokenHelper;
+
+    @Autowired
+    private CheckInOutService checkInOutService;
 
 //    @Autowired
 //    private GcoinService gcoinService;
@@ -87,5 +89,13 @@ public class UserController {
         informationUser.setNumberCoin(BigInteger.valueOf(10));
         informationUser.setPriceCoin(BigInteger.valueOf(10000));
         return informationUser;
+    }
+
+    @RequestMapping(value = "/getHistory", method = GET)
+    public void loadHistory(HttpServletRequest req) {
+        String token = tokenHelper.getToken(req);
+        String username = tokenHelper.getUsernameFromToken(token);
+        User user = userService.findByUsername(username);
+        checkInOutService.getHistoryOfUser(user.getId());
     }
 }

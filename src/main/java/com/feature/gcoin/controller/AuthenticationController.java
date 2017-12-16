@@ -146,6 +146,7 @@ public class AuthenticationController {
         return ResponseEntity.accepted().body(response);
     }
 
+
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
