@@ -16,6 +16,16 @@ public class ServicesDTO {
 
     private Date updateAt;
 
+    private Date buyDate;
+
+    public Date getBuyDate() {
+        return buyDate;
+    }
+
+    public void setBuyDate(Date buyDate) {
+        this.buyDate = buyDate;
+    }
+
     public Long getId() {
         return id;
     }

@@ -50,11 +50,11 @@ public class VoteController {
     }
 
     @RequestMapping(method = POST, value = "/voteToStaff")
-    public ResponseEntity<?> voteToStaff(@RequestBody String address, HttpServletRequest httpServletRequest) {
+    public ResponseEntity<?> voteToStaff(@RequestBody Long idUser, HttpServletRequest httpServletRequest) {
         String token = tokenHelper.getToken(httpServletRequest);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
-        boolean res = voteService.voteToStaff(user.getAddress(), address);
+        boolean res = voteService.voteToStaff(user.getAddress(), idUser);
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", res));
     }
 

@@ -1,12 +1,15 @@
 package com.feature.gcoin.controller;
 
+import com.feature.gcoin.common.constant.Const;
 import com.feature.gcoin.common.util.Constants;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.reponse.InformationUser;
 import com.feature.gcoin.dto.reponse.Response;
 import com.feature.gcoin.dto.request.ServiceRequest;
+import com.feature.gcoin.model.ServiceBuy;
 import com.feature.gcoin.model.User;
 import com.feature.gcoin.security.TokenHelper;
+import com.feature.gcoin.service.ServicesBuyService;
 import com.feature.gcoin.service.ServicesService;
 import com.feature.gcoin.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -29,8 +33,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 public class ServicesController {
     @Autowired
     private ServicesService servicesService;
+
     @Autowired
     private TokenHelper tokenHelper;
+
     @Autowired
     UserService userService;
 
@@ -70,6 +76,7 @@ public class ServicesController {
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
         servicesService.transactionByServices(user.getId(), serviceRequest);
+
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", null));
     }
 

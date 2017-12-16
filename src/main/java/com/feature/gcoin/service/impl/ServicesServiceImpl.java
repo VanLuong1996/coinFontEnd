@@ -4,8 +4,11 @@ import com.feature.gcoin.common.constant.Const;
 import com.feature.gcoin.common.util.ModelMapperUtil;
 import com.feature.gcoin.dto.ServicesDTO;
 import com.feature.gcoin.dto.request.ServiceRequest;
+import com.feature.gcoin.model.ServiceBuy;
 import com.feature.gcoin.model.Services;
+import com.feature.gcoin.repository.ServicesBuyRepository;
 import com.feature.gcoin.repository.ServicesRepository;
+import com.feature.gcoin.service.ServicesBuyService;
 import com.feature.gcoin.service.ServicesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,6 +27,11 @@ public class ServicesServiceImpl implements ServicesService {
 
     @Autowired
     private ServicesRepository servicesRepository;
+    @Autowired
+    private ServicesBuyRepository servicesBuyRepository;
+
+    @Autowired
+    private ServicesBuyService servicesBuyService;
 
     @Override
     public List<ServicesDTO> findAll() {
@@ -99,7 +108,7 @@ public class ServicesServiceImpl implements ServicesService {
         try { //TODO -- get coins from smartcontact
             //luong coin hien tai cua user
             BigInteger userCoin;
-            userCoin = BigInteger.valueOf(1000);
+            userCoin = BigInteger.valueOf(10000000);
             Services services = servicesRepository.findById(serviceRequest.getServiceId());
             if (services == null) {
                 throw new Exception("dich vu null");
@@ -115,6 +124,14 @@ public class ServicesServiceImpl implements ServicesService {
                 // TODO -- minus coins from smartcontract
                 userCoin = userCoin.subtract(totalCoinsOfService);
                 log.info("Coin hien tai cua user: " + userCoin);
+                ServiceBuy serviceBuy = new ServiceBuy();
+                serviceBuy.setServiceId(serviceRequest.getServiceId());
+                serviceBuy.setPrice(Const.exchangeRate.longValue());
+                serviceBuy.setQuantity(Long.valueOf(serviceRequest.getTotal()));
+                serviceBuy.setUserId(userId);
+                serviceBuy.setCreatAt(new Date());
+
+                servicesBuyService.saveServiceBuy(serviceBuy);
             }
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
@@ -123,13 +140,16 @@ public class ServicesServiceImpl implements ServicesService {
 
     @Override
     public List<ServicesDTO> listOwnedServices(Long userId) {
-        //TODO
-//        List<ServicesDTO> servicesDTOS = new ArrayList<>();
-//        List<Services> services = servicesRepository.findAll();
-//        servicesDTOS = ModelMapperUtil.maps((List) services, ServicesDTO.class);
+
         List<ServicesDTO> servicesDTOS = new ArrayList<>();
-        List<Services> services = servicesRepository.findAll();
-        servicesDTOS = ModelMapperUtil.maps((List) services, ServicesDTO.class);
+        List<ServiceBuy> services = servicesBuyRepository.findByUserId(userId);
+        for (ServiceBuy serviceBuy : services) {
+            Services sv = servicesRepository.findById(serviceBuy.getServiceId());
+            ServicesDTO servicesDTO = new ServicesDTO();
+            servicesDTO = ModelMapperUtil.map(sv, ServicesDTO.class);
+            servicesDTO.setBuyDate(serviceBuy.getCreatAt());
+            servicesDTOS.add(servicesDTO);
+        }
         return servicesDTOS;
     }
 

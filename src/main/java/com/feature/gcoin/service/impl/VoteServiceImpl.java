@@ -45,7 +45,7 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
-    public boolean voteToStaff(String addressVoter, String candidate) {
+    public boolean voteToStaff(String address, Long candidateId) {
         return true;
     }
 
