@@ -109,8 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
 
         // Custom JWT based security filter
-        http
-                .addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService),BasicAuthenticationFilter.class);
+        http.addFilterBefore(new TokenAuthenticationFilter(tokenHelper, jwtUserDetailsService),BasicAuthenticationFilter.class);
 
         // disable page caching
         http.headers().cacheControl();
