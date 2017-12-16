@@ -28,4 +28,5 @@ public class UserLoginResponse  {
 	{
 		this.userDTO = userDTO;
 	}
+
 }
