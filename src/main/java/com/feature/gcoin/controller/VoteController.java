@@ -15,9 +15,7 @@ import com.feature.gcoin.service.VoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -49,8 +47,8 @@ public class VoteController {
         return ResponseEntity.ok(new Response(Constants.SUCCESS, "Successful", userDTOS));
     }
 
-    @RequestMapping(method = POST, value = "/voteToStaff")
-    public ResponseEntity<?> voteToStaff(@RequestBody Long idUser, HttpServletRequest httpServletRequest) {
+    @RequestMapping(method = POST, value = "/voteToStaff/{idUser}")
+    public ResponseEntity<?> voteToStaff(@PathVariable Long idUser, HttpServletRequest httpServletRequest) {
         String token = tokenHelper.getToken(httpServletRequest);
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
