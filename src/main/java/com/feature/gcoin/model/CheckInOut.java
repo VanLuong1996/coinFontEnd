@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Entity
 @Table(name="CHECK_IN_OUT")
-public class CheckInOut extends BaseEntity{
+public class CheckInOut extends BaseEntity {
 
     @Id
     @Column(name = "id")
@@ -25,11 +25,11 @@ public class CheckInOut extends BaseEntity{
     private DateTime checkOutTime; //4
 
     @Column(name = "TOTAL")
-    private DateTime total; //5
+    private Double total; //5
 
-    private Date createAt; //6
+    private DateTime createAt; //6
 
-    private Date updateAt; //7
+    private DateTime updateAt; //7
 
     public CheckInOut() {
     }
@@ -66,27 +66,28 @@ public class CheckInOut extends BaseEntity{
         this.checkOutTime = checkOutTime;
     }
 
-    public DateTime getTotal() {
+    public Double getTotal() {
         return total;
     }
 
-    public void setTotal(DateTime total) {
+    public void setTotal(Double total) {
         this.total = total;
     }
 
-    public Date getCreateAt() {
+    public DateTime getCreateAt() {
         return createAt;
     }
 
-    public void setCreateAt(Date createAt) {
+    public void setCreateAt(DateTime createAt) {
         this.createAt = createAt;
     }
 
-    public Date getUpdateAt() {
+    @Override
+    public DateTime getUpdateAt() {
         return updateAt;
     }
 
-    public void setUpdateAt(Date updateAt) {
+    public void setUpdateAt(DateTime updateAt) {
         this.updateAt = updateAt;
     }
 }

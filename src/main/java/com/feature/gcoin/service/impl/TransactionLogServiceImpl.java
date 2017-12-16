@@ -2,6 +2,7 @@ package com.feature.gcoin.service.impl;
 
 import java.util.Date;
 
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +26,8 @@ public class TransactionLogServiceImpl implements TransactionLogService {
 		transaction.setCoin(req.getTotalCoin());
 		transaction.setServiceId(0L);
 		transaction.setTransactionLog(type);
-		transaction.setCreateAt(new Date());
-		transaction.setUpdateAt(new Date());
+		transaction.setCreateAt(new DateTime());
+		transaction.setUpdateAt(new DateTime());
 		
 		return transactionLogRepository.save(transaction);
 	}

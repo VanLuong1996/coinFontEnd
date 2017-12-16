@@ -7,6 +7,7 @@ import com.feature.gcoin.model.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface UserService {
+
 	User findById(Long id);
 
 	User findByUsername(String userName) throws UsernameNotFoundException;
