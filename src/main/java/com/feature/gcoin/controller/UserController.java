@@ -5,6 +5,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
 import java.security.Principal;
 import java.util.List;
 
+import com.feature.gcoin.dto.reponse.InformationUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,5 +32,16 @@ public class UserController {
     @RequestMapping( method = GET, value= "/user/all")
     public List<User> loadAll() {
         return this.userService.findAll();
+    }
+
+    @RequestMapping(value = "/get-infor", method = GET)
+    public InformationUser loadInforById( @PathVariable Long userId ) {
+        InformationUser informationUser = new InformationUser();
+        User user = userService.findById( userId );
+        informationUser.setEmail(user.getEmail());
+        informationUser.setName(user.getName());
+        informationUser.setUserName(user.getUsername());
+        informationUser.setAddress(user.getAddress());
+        return informationUser;
     }
 }
