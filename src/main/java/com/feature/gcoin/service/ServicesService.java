@@ -18,7 +18,7 @@ public interface ServicesService {
     ServicesDTO updateServices(Long id, ServicesDTO servicesDTO);
 
     //mua mot hoac nhieu dich vu, tru coin dua vao ti gia giua tien va coin , luu transaction_log
-    void transactionByServices(Long userId, List<ServicesDTO> lstServives);
+    void transactionByServices(Long userId, ServicesDTO lstServives);
 
     List<ServicesDTO> listOwnedServices(Long userId);
 

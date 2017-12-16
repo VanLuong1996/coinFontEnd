@@ -32,6 +32,8 @@ public class UserDTO extends BaseDTO {
 
     private String address;
 
+    private int numberVote;
+
     private BigInteger numberCoin; // address
 
     private BigInteger priceCoin; // address
@@ -127,5 +129,13 @@ public class UserDTO extends BaseDTO {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public int getNumberVote() {
+        return numberVote;
+    }
+
+    public void setNumberVote(int numberVote) {
+        this.numberVote = numberVote;
     }
 }
