@@ -55,7 +55,7 @@ public class AuthenticationController {
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(
-            @RequestBody  LoginRequest loginRequest,
+            @RequestBody LoginRequest loginRequest,
             HttpServletRequest request,
             HttpServletResponse response,
             Device device
