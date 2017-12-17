@@ -18,12 +18,10 @@ public class CheckInOut extends BaseEntity {
 
     @Column(name = "USER_ID")
     private Long userId; //2
-
     @Column(name = "CHECK_IN_TIME")
-    private Date checkInTime; //3
-
+    private Timestamp checkInTime; //3
     @Column(name = "CHECK_OUT_TIME")
-    private Date checkOutTime; //4
+    private Timestamp checkOutTime; //4
 
     @Column(name = "TOTAL")
     private Double total; //5
@@ -55,19 +53,19 @@ public class CheckInOut extends BaseEntity {
         this.total = total;
     }
 
-    public Date getCheckInTime() {
+    public Timestamp getCheckInTime() {
         return checkInTime;
     }
 
-    public void setCheckInTime(Date checkInTime) {
+    public void setCheckInTime(Timestamp checkInTime) {
         this.checkInTime = checkInTime;
     }
 
-    public Date getCheckOutTime() {
+    public Timestamp getCheckOutTime() {
         return checkOutTime;
     }
 
-    public void setCheckOutTime(Date checkOutTime) {
+    public void setCheckOutTime(Timestamp checkOutTime) {
         this.checkOutTime = checkOutTime;
     }
 }

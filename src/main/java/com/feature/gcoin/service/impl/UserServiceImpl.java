@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
         try {
 //            userDTO.setNumberVote(gemVoteService.getVoteCountByAddress(userDTO.getAddress()).intValue());
             userDTO.setNumberCoin(gcoinService.getCoin(userDTO.getAddress()));
-            userDTO.setPriceCoin(BigInteger.valueOf(10000));
+            userDTO.setPriceCoin(BigInteger.valueOf(5));
         } catch (Exception e) {
             e.printStackTrace();
         }

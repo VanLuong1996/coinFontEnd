@@ -60,7 +60,7 @@ public class VoteController {
         String username = tokenHelper.getUsernameFromToken(token);
         User user = userService.findByUsername(username);
         boolean res = voteService.voteToStaff(user.getAddress(), idUser);
-        String msg = res ? "Have voted before!." : "Successful";
+        String msg = res ? "Successful" : "Have voted before!.";
         return ResponseEntity.ok(new Response(Constants.SUCCESS, msg, res));
     }
 

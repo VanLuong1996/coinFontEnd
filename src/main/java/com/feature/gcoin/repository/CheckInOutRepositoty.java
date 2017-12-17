@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CheckInOutRepositoty extends JpaRepository<CheckInOut, Long> {
 
-    @Query("FROM CheckInOut c where c.userId = :userId and trunc(c.creatAt) = trunc(:creatAt)")
+    @Query("FROM CheckInOut c where c.userId = :userId and DATE_FORMAT(c.creatAt, '%Y-%m-%d') =  DATE_FORMAT(:creatAt, '%Y-%m-%d') ")
     public List<CheckInOut> getCheckInOutOfDay(@Param("userId") Long userId, @Param("creatAt") Date creatAt);
 
     List<CheckInOut> findAllByUserIdAndCreatAt(Long userId, Date creatAt);

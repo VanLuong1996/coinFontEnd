@@ -18,10 +18,9 @@ public class GemVoteUtil {
 
     public static Credentials credentials;
     public static GemVote gemVote;
-
-    public static void loadWeb3j() throws IOException, CipherException {
+ public static void loadWeb3j() throws IOException, CipherException {
         web3j = Web3j.build(new HttpService());
-        credentials = Credentials.create("6408911e29801924fee91ab88ed47260f687d666b36681959d8b48969c1186d5");
+        credentials = Credentials.create("88f3b0c72266a0106acd810b1970f1778801da60e943c187318b41843cec0f69");
     }
 
     //chi deploy 1 lan

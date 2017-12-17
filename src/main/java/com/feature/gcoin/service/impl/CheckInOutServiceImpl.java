@@ -54,7 +54,7 @@ public class CheckInOutServiceImpl implements CheckInOutService {
         Date date = new Date();
         if (isCheckFirts == true) {
             CheckInOut checkInOut = new CheckInOut();
-            checkInOut.setCheckInTime(date);
+            checkInOut.setCheckInTime(new java.sql.Timestamp(date.getTime()));
             checkInOut.setCreatAt(date);
             checkInOut.setUserId(userId);
             checkInOutRepositoty.save(checkInOut);
@@ -62,15 +62,15 @@ public class CheckInOutServiceImpl implements CheckInOutService {
             List<CheckInOut> list = checkInOutRepositoty.getCheckInOutOfDay(userId, date);
             if (list != null && list.size() > 0) {
                 checkInOutTemp = list.get(0);
-                checkInOutTemp.setCheckOutTime(date);
+                checkInOutTemp.setCheckOutTime(new java.sql.Timestamp(date.getTime()));
                 checkInOutTemp.setUpdateAt(date);
                 if ((checkInOutTemp.getCheckOutTime().getTime() - checkInOutTemp.getCheckInTime().getTime()) >= 8 * 60 * 60 * 1000) {
-                    if (checkInOutTemp.getTotal() == 1D) {
+                    if (checkInOutTemp.getTotal()==null) {
                         TransactionLog transactionLog = new TransactionLog();
                         transactionLog.setCreatAt(date);
-                        transactionLog.setCoin(1L);
+                        transactionLog.setCoin(5L);
                         User user = userRepository.findById(userId);
-                        String logSub = gcoinService.addCoin(user.getAddress(), BigInteger.valueOf(1L));
+                        String logSub = gcoinService.addCoin(user.getAddress(), BigInteger.valueOf(5L));
                         transactionLog.setTransactionLog(logSub);
                         transactionLog.setType(Constants.TransactionType.ADD_COIN.name());
                         transactionLog.setUpdateAt(date);
@@ -89,7 +89,7 @@ public class CheckInOutServiceImpl implements CheckInOutService {
     @Override
     public boolean isTheFistCheckInOut(Long userId) throws Exception {
         Date date = new Date();
-        List<CheckInOut> listUser = checkInOutRepositoty.findAllByUserIdAndCreatAt(userId, date);
+        List<CheckInOut> listUser = checkInOutRepositoty.getCheckInOutOfDay(userId, date);
         if (listUser.size() == 0) {
             return true;
         } else {

@@ -62,7 +62,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             UserLoginResponse response = new UserLoginResponse();
             response.setUserName(userName);
             UserDTO userDTO = ModelMapperUtil.map(userEntity, UserDTO.class);
-            userDTO.setPriceCoin(BigInteger.valueOf(10000));
+            userDTO.setPriceCoin(BigInteger.valueOf(5));
             response.setUserDTO(userDTO);
             return response;
         }
